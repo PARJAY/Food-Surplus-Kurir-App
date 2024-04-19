@@ -1,4 +1,4 @@
-package com.example.foodsurpluskurirapp
+package com.example.kurrirapps
 
 import org.junit.Test
 

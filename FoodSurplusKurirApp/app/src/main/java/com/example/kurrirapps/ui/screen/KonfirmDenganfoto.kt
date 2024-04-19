@@ -1,0 +1,175 @@
+package com.example.kurrirapps.ui.screen
+
+import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import com.example.kurrirapps.presentation.auth.UserData
+import com.example.kurrirapps.ui.component.TopBar
+import com.example.kurrirapps.ui.navigation.Screen
+import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.KurrirAppsTheme
+import com.example.kurrirapps.ui.theme.yellow
+import java.util.Objects
+
+
+@Composable
+fun KonfirmDgnFoto(
+    userData: UserData?,
+    onNavigateToScreen:(String)->Unit,
+    uriImageHandler: Uri,
+    onImageCaptured: (Boolean, Uri) -> Unit,
+
+) {
+    val context = LocalContext.current
+    val file = context.createImagefile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        context.packageName + ".provider", file
+    )
+
+    var captureImageUri by remember {
+        mutableStateOf<Uri>(Uri.EMPTY)
+    }
+
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
+            captureImageUri = uri
+        }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){}
+   Box(modifier = Modifier
+       .fillMaxSize()
+       .background(yellow))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {Box (modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopCenter){
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(Brown)
+            .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Absolute.SpaceBetween
+        ){
+            if (userData?.username != null){
+                Text(
+                    text = userData.username,
+                    color = Color.White
+                )
+            }
+            if(userData?.profilePictureUrl !=null){
+                AsyncImage(model = userData.profilePictureUrl,
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            onNavigateToScreen(Screen.ScreenProfile.route)
+                        },
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+
+    }
+        Spacer(modifier = Modifier.height(70.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Button(
+                onClick = {
+                    val permissionCheckResult =
+                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
+
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED)
+                    {
+                        cameraLauncher.launch(uri)
+                    }
+                    else
+                    {
+                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    }
+                    onNavigateToScreen(Screen.screenAkhir.route)
+
+
+                },
+                modifier = Modifier
+                    .height(200.dp)
+                    .width(200.dp),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+
+
+//                if (captureImageUri.path == null) {
+                    Text(
+                        text = "Foto konfirmasi Pesanan Sudah Sampai",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = (20.sp),
+
+                        )
+                    )
+                }
+//                else
+//                    AsyncImage(
+//                        model = captureImageUri,
+//                        contentDescription = null,
+//                    )
+            }
+
+//        }
+    }
+}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun KonfirmdgnFotoPreview() {
+//    KurrirAppsTheme {
+//        KonfirmDgnFoto(onNavigateToScreen ={})
+//    }
+//}
