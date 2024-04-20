@@ -1,7 +1,9 @@
 package com.example.kurrirapps.presentation.pesanan
 
-import com.example.kurrirapps.model.Pesanan
+import com.example.kurrirapps.data.model.PesananModel
 
 data class PesananState (
-    val pesananListState: List<Pesanan> = emptyList()
+    val isLoading: Boolean = false,
+    val transaksiListState: List<PesananModel> = emptyList(),
+    val errorMessage: String? = null,
 )

@@ -104,7 +104,7 @@ fun screenAkhir(
                }
                Spacer(modifier = Modifier.height(40.dp))
                SisipkanPesan()
-               Konfirmasi(onNavigateToPesananMasukScreen)
+//               Konfirmasi(onNavigateToPesananMasukScreen)
 
            }
            fun Context.createImagefile(): File {
@@ -120,13 +120,11 @@ fun screenAkhir(
 
            }
 
-               }
-
-
-
-           }
-
        }
+
+   }
+
+}
 
 
 

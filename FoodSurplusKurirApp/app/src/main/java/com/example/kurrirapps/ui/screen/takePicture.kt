@@ -34,13 +34,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import coil.compose.rememberImagePainter
 import com.example.kurrirapps.R
+import com.example.kurrirapps.presentation.auth.UserData
 import java.io.File
 import java.net.URI
 import java.util.Date
 import java.util.Objects
 
 @Composable
-fun imageCaptureFormCamera() {
+fun imageCaptureFormCamera(
+    userData: UserData?,
+    onNavigateToScreen:(String)->Unit,
+    onNavigateToPesananMasukScreen:()->Unit)
+ {
 
     val context = LocalContext.current
     val file = context.createImagefile()
@@ -52,6 +57,8 @@ fun imageCaptureFormCamera() {
     var captureImageUri by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
+
+
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -109,17 +116,17 @@ fun imageCaptureFormCamera() {
 
     }
 
-    if (captureImageUri.path?.isNotEmpty() == true)
-
-
-    {
-        Image(
-            modifier = Modifier
-                .padding(16.dp, 8.dp),
-
-            painter = rememberImagePainter(captureImageUri),
-            contentDescription = null)
-    }
+//    if (captureImageUri.path?.isNotEmpty() == true)
+//
+//
+//    {
+//        Image(
+//            modifier = Modifier
+//                .padding(16.dp, 8.dp),
+//
+//            painter = rememberImagePainter(captureImageUri),
+//            contentDescription = null)
+//    }
 
 
 }

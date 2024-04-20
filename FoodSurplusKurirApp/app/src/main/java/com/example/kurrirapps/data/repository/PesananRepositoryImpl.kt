@@ -2,7 +2,6 @@ package com.example.kurrirapps.data.repository
 
 import com.example.kurrirapps.data.common.PESANAN_COLLECTION
 import com.example.kurrirapps.data.model.PesananModel
-import com.example.kurrirapps.model.Pesanan
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 

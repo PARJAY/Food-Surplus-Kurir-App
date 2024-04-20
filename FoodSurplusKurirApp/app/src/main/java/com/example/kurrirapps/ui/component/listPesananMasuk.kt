@@ -52,7 +52,7 @@ fun listPesanan(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            Button(onClick = {onNavigateToScreen(Screen.KonfirmDenganfoto.route)},
+            Button(onClick = {onNavigateToScreen(Screen.KonfirmDgnFoto.route)},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
                 ),
