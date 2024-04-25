@@ -6,4 +6,5 @@ sealed class Screen(val route : String) {
     data object PesananMasuk : Screen ("PesananMasuk")
     data object KonfirmDgnFoto : Screen ("KonfirmDgnFoto")
     data object screenAkhir : Screen ("screenAkhir")
+    data object ViewHotelModel : Screen ("ViewHotelModel")
 }

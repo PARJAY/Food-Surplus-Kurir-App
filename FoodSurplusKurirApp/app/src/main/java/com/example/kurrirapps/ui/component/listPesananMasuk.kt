@@ -10,24 +10,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.kurrirapps.data.model.PesananModel
+import com.example.kurrirapps.presentation.pesanan.PesananEvent
 import com.example.kurrirapps.ui.navigation.Screen
-import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 
 @Composable
 fun listPesanan(
-    onNavigateToScreen:(String)->Unit
+    onNavigateToScreen:(String)->Unit,
+    pesananModel: PesananModel,
+    onPesananMasukEvent: (PesananEvent) -> Unit
 ){
     Column(
         modifier = Modifier
@@ -38,14 +37,14 @@ fun listPesanan(
             .padding(8.dp),
 
     ) {
-        Text(text = "Adiodo",
+        Text(text = pesananModel.id_user,
             style = TextStyle(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         )
-        Text(text = "Nasi Goreng")
-        Text(text = "Jalan Ayani")
+        Text(text = pesananModel.id_pesanan)
+        Text(text = pesananModel.id_hotel)
         Text(text = "08123456788")
         Text(text = "2km")
         Row(
@@ -68,15 +67,15 @@ fun listPesanan(
             }
         }
     }
-
 }
-@Preview(showBackground = true)
-@Composable
-fun KonfirmasiPreview(){
-    KurrirAppsTheme {
-        listPesanan(onNavigateToScreen = {})
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun KonfirmasiPreview(){
+//    KurrirAppsTheme {
+//        listPesanan(onNavigateToScreen = {},
+//            pesananModel = PesananModel("ASDASDAFAFdas"))
+//    }
+//}
 
 
 

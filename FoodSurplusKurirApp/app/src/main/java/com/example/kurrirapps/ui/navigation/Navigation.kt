@@ -1,5 +1,6 @@
 package com.example.kurrirapps.ui.navigation
 
+import ScreenViewHotelModel
 import android.app.Activity.RESULT_OK
 import android.net.Uri
 import android.util.Log
@@ -17,25 +18,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.kurrirapps.presentation.auth.SignInViewModel
-import com.example.kurrirapps.ui.screen.KonfirmDgnFoto
-import com.example.kurrirapps.ui.screen.PesananMasuk
-import com.example.kurrirapps.ui.screen.screenAkhir
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.dummyfirebaseauth.MyApp
+import com.example.kurrirapps.Hotel_List.HotelListScreenViewModel
 import com.example.kurrirapps.data.model.KurirModel
-import com.example.kurrirapps.data.repository.PesananRepositoryImpl
+import com.example.kurrirapps.data.repository.KurirRepositoryImpl
 import com.example.kurrirapps.feature.EnumPhotoCapture
 import com.example.kurrirapps.presentation.auth.GoogleAuthClient
+import com.example.kurrirapps.presentation.auth.SignInViewModel
+import com.example.kurrirapps.presentation.kurir.KurirViewModel
 import com.example.kurrirapps.presentation.pesanan.PesananRepository
 import com.example.kurrirapps.presentation.pesanan.PesananViewModel
+import com.example.kurrirapps.ui.screen.KonfirmDgnFoto
 import com.example.kurrirapps.ui.screen.LoginScreen
+import com.example.kurrirapps.ui.screen.PesananMasuk
 import com.example.kurrirapps.ui.screen.profileScreen
+import com.example.kurrirapps.ui.screen.screenAkhir
+import com.example.kurrirapps.viewModelFactory
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -64,7 +67,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
 
             LaunchedEffect(key1 = Unit) {
                 if (googleAuthUiClient.getSignedInUser() != null) {
-                    navController.navigate(Screen.PesananMasuk.route)
+                    navController.navigate(Screen.ViewHotelModel.route)
                 }
             }
             val launcher = rememberLauncherForActivityResult(
@@ -85,7 +88,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                 if (state.isSignInSuccessful) {
                     Toast.makeText(context, "Sign in Success", Toast.LENGTH_LONG).show()
 
-                    navController.navigate(Screen.PesananMasuk.route)
+                    navController.navigate(Screen.ViewHotelModel.route)
                     viewModel.resetState()
                 }
             }
@@ -105,7 +108,48 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
             )
 
         }
+        composable(Screen.ViewHotelModel.route) {
+            val hotelListScreenVM: HotelListScreenViewModel = viewModel(
+                factory = viewModelFactory { HotelListScreenViewModel(MyApp.appModule.hotelRepository) }
+            )
+            val HotelListScreenUiState = hotelListScreenVM.state.collectAsStateWithLifecycle().value
+            val userListScreenEffectFlow = hotelListScreenVM.effect
+
+
+            val KurirVM: KurirViewModel = viewModel(
+                factory = viewModelFactory { KurirViewModel(MyApp.appModule.kurirRepositoryImpl,
+                    idKurir = googleAuthUiClient.getSignedInUser()!!.userId) }
+            )
+            val KurirUiState = KurirVM.state.collectAsStateWithLifecycle().value
+            val kurirEffectFlow = KurirVM.effect
+
+            ScreenViewHotelModel(
+                userData = googleAuthUiClient.getSignedInUser()!!,
+                kurirViewModel = KurirViewModel(
+                    kurirRepositoryImpl = KurirRepositoryImpl(db = FirebaseFirestore.getInstance()),
+                    idKurir = googleAuthUiClient.getSignedInUser()!!.userId
+                ),
+                onNavigateToScreen = {navController.navigate(it)}
+//                hotelListScreenUiState = HotelListScreenUiState,
+//                hotelListScreenEffectFlow = userListScreenEffectFlow,
+//                onHotelEvent =hotelListScreenVM::onEvent
+            )
+        }
         composable(Screen.PesananMasuk.route) {
+
+            val hotelListScreenVM: HotelListScreenViewModel = viewModel(
+                factory = viewModelFactory { HotelListScreenViewModel(MyApp.appModule.hotelRepository) }
+            )
+            val HotelListScreenUiState = hotelListScreenVM.state.collectAsStateWithLifecycle().value
+            val userListScreenEffectFlow = hotelListScreenVM.effect
+
+
+
+            val pesananScreenVM: PesananViewModel = viewModel(
+                factory = viewModelFactory { PesananViewModel(MyApp.appModule.pesananRepository) }
+            )
+            val pesananScreenVMUiState = pesananScreenVM.state.collectAsState().value
+            val homeScreenVMEffectFlow = pesananScreenVM.effect
             Log.d("Screen", "uid : ${googleAuthUiClient.getSignedInUser()?.userId}")
 
             LaunchedEffect(key1 = googleAuthUiClient.getSignedInUser()?.userId != null) {
@@ -142,7 +186,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
 
             PesananMasuk(
                 userData = googleAuthUiClient.getSignedInUser(),
-                onNavigateToScreen = { navController.navigate(it) }
+                onNavigateToScreen = { navController.navigate(it) },
+                pesananListScreenUiState = pesananScreenVMUiState,
+                onPesananMasukEvent = pesananScreenVM::onEvent,
+                hotelListScreenUiState = HotelListScreenUiState,
+                hotelListScreenEffectFlow = userListScreenEffectFlow,
             )
 
         }
@@ -185,17 +233,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
 
         }
 
-
-//        composable("TakePictureScreen") {
-//            TakePicture(
-//                uriImageHandler = uriImageHandler,
-//                onImageCaptured = { isPhotoTakem, uriPhotoTaken ->
-//                    capturedImageOrderUri = uriImageHandler
-//                    navController.popBackStack()
-//                }
-//            )
-
-//        }
         composable(Screen.ScreenProfile.route) {
             profileScreen(
                 userData = googleAuthUiClient.getSignedInUser(),

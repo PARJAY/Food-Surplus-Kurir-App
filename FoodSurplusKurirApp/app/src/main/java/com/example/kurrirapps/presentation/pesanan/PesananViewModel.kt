@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
-import com.example.kurrirapps.model.DaftarPesanan
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,12 +15,12 @@ import kotlinx.coroutines.launch
 class PesananViewModel (
     private val pesananRepository: PesananRepository
     ): ViewModel() {
-        private val _state = MutableStateFlow(PesananState())
+        private val _state = MutableStateFlow(PesananListScreenUiState())
 
         private val _pesanan = pesananRepository.getAllPesanan()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private fun setState(newState: PesananState) {
+    private fun setState(newState: PesananListScreenUiState) {
         _state.value = newState
     }
     private fun setEffect(builder: () -> PesananSideEffect) {
@@ -35,34 +34,21 @@ class PesananViewModel (
             state.copy(
                 transaksiListState = transaksi
             )
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PesananState())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PesananListScreenUiState())
 
         fun onEvent(event: PesananEvent) {
             when (event) {
-                is PesananEvent.DeletePesanan -> {
-                    viewModelScope.launch {
-                        pesananRepository.deletePesanan(event.pesanan)
-                    }
-                }
-
                 is PesananEvent.UpdatePesanan -> {
                     viewModelScope.launch {
-                        pesananRepository.updatePesanan(event.pesanan)
+                        pesananRepository.getAllPesanan()
                     }
                 }
-
                 is PesananEvent.ReadPesanan -> {
                     viewModelScope.launch {
-                        pesananRepository.readPesanan(event.pesanan)
+                        pesananRepository.getAllPesanan()
                     }
                 }
 
-                is PesananEvent.CreatePesanan -> {
-                    viewModelScope.launch {
-                        pesananRepository.insertPesanan(event.pesanan)
-
-                    }
-                }
             }
         }
 

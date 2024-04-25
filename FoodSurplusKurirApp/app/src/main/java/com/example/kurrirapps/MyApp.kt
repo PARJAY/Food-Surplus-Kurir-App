@@ -1,13 +1,12 @@
 package com.example.dummyfirebaseauth
 
 import android.app.Application
-import com.example.dummyfirebaseauth.di.AppModule
-import com.example.dummyfirebaseauth.di.AppModuleImpl
+import com.example.kurrirapps.di.AppModuleImpl
 
 class MyApp: Application() {
 
     companion object {
-        lateinit var appModule: AppModule
+        lateinit var appModule: AppModuleImpl
     }
 
     override fun onCreate() {
