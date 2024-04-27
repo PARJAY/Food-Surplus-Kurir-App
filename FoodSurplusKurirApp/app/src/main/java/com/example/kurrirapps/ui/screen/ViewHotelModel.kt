@@ -2,8 +2,8 @@
 import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,14 +14,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dummyfirebaseauth.MyApp
 import com.example.kurrirapps.data.model.HotelModel
 import com.example.kurrirapps.presentation.auth.UserData
 import com.example.kurrirapps.presentation.kurir.KurirViewModel
-import com.example.kurrirapps.ui.navigation.Screen
+import com.example.kurrirapps.ui.component.DisplayHotel
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 //data class HotelModel(
@@ -37,13 +37,9 @@ fun ScreenViewHotelModel(
     kurirViewModel: KurirViewModel,
     onNavigateToScreen: (String) -> Unit
 ) {
-
     val contex = LocalContext.current
 
-    val hotelModels = remember {
-        mutableStateListOf<HotelModel>()
-    }
-
+    val hotelModels = remember { mutableStateListOf<HotelModel>() }
 
     LaunchedEffect(Unit) { // Launch effect after composition
         MyApp.appModule.hotelRepository.getLiveDataHotel (
@@ -69,9 +65,19 @@ fun ScreenViewHotelModel(
         )
     }
 
-    LazyColumn {
-        items(hotelModels) {
-            Test(
+    LazyColumn (Modifier.padding(8.dp)) {
+        item {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = "Masukkan Hotel Tempat Anda Bekerja",
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        items (hotelModels) {
+            DisplayHotel (
                 hotelModel = it,
                 onNavigateToScreen = onNavigateToScreen,
                 kuriirViewModel = kurirViewModel,
@@ -89,30 +95,4 @@ fun fetchSnapshotToHotel(queryDocumentSnapshot : QueryDocumentSnapshot) : HotelM
         telp = queryDocumentSnapshot.getString("phoneNumber") ?: "",
         address = queryDocumentSnapshot.getString("alamat") ?: ""
     )
-}
-
-
-@Composable
-fun Test(
-    onNavigateToScreen:(String)->Unit,
-    hotelModel: HotelModel,
-    kuriirViewModel: KurirViewModel,
-    userData: UserData
-){
-//   Text(text = hotelModel.id)
-   Text(
-       text = hotelModel.name,
-       style = TextStyle(
-           fontSize = 30.sp
-       ),
-       modifier = Modifier
-           .clickable {
-               Log.d("CEK DATA", "${userData.userId} + ${hotelModel.id}")
-               kuriirViewModel.updateDataKurir(
-                   selectedKuriirlId = userData.userId,
-                   idHotel = hotelModel.id,
-               )
-               onNavigateToScreen(Screen.PesananMasuk.route)
-           }
-   )
 }

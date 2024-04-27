@@ -12,6 +12,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -23,11 +25,10 @@ import com.example.kurrirapps.presentation.pesanan.PesananEvent
 import com.example.kurrirapps.ui.navigation.Screen
 
 @Composable
-fun listPesanan(
+fun ListPesanan(
     onNavigateToScreen:(String)->Unit,
-    pesananModel: PesananModel,
-    onPesananMasukEvent: (PesananEvent) -> Unit
-){
+    pesananModel: PesananModel
+) {
     Column(
         modifier = Modifier
             .border(
@@ -43,15 +44,19 @@ fun listPesanan(
                 fontWeight = FontWeight.Bold
             )
         )
-        Text(text = pesananModel.id_pesanan)
+        Text(text = pesananModel.id)
         Text(text = pesananModel.id_hotel)
         Text(text = "08123456788")
         Text(text = "2km")
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            Button(onClick = {onNavigateToScreen(Screen.KonfirmDgnFoto.route)},
+            Button(
+                onClick = {
+                    onNavigateToScreen(Screen.KonfirmDgnFoto.route)
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
                 ),
@@ -62,12 +67,14 @@ fun listPesanan(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
 
-                    ))
-
+                    )
+                )
             }
         }
     }
 }
+
+
 //@Preview(showBackground = true)
 //@Composable
 //fun KonfirmasiPreview(){
@@ -76,21 +83,3 @@ fun listPesanan(
 //            pesananModel = PesananModel("ASDASDAFAFdas"))
 //    }
 //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

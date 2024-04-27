@@ -41,13 +41,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
-import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
-import com.example.kurrirapps.model.DaftarPesanan
 import com.example.kurrirapps.presentation.auth.UserData
 import com.example.kurrirapps.presentation.pesanan.PesananViewModel
 import com.example.kurrirapps.tools.FirebaseHelper
-import com.example.kurrirapps.ui.component.SisipkanPesan
 import com.example.kurrirapps.ui.theme.Brown
 import com.example.kurrirapps.ui.theme.yellow
 import java.util.Objects
@@ -216,8 +213,9 @@ fun KonfirmDgnFoto(
                                     Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
                                 }
                             )
-                            pesananViewModel.editcatatan(
+                            pesananViewModel.setPesananStatus(
                                 idPesanan = "3Fg8AaY6VjurgMYE5ukG",
+                                StatusPesanan.SAMPAI,
                                 text
                             )
 

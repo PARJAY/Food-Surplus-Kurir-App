@@ -1,7 +1,10 @@
 package com.example.kurrirapps.logic
 
 enum class StatusPesanan {
-    SUDAH_DIPESAN,
-    SEDANG_DIANTAR,
-    SUDAH_SAMPAI
+    MENUNGGU_KONFIRMASI_ADMIN,
+    TIDAK_DISETUJUI_ADMIN,
+    TERKONFIRMASI_ADMIN,
+    DIANTAR,
+    SAMPAI,
+    SELESAI
 }

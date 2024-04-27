@@ -59,6 +59,14 @@
           }
         },
         {
+          "client_id": "608371446284-qa8ovpf1k9oehvnfmq182pc2j6atkmr1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kurrirapps",
+            "certificate_hash": "6a35f1258fe49aa846fc483253925074c522a43d"
+          }
+        },
+        {
           "client_id": "608371446284-m967ifoovvhbbhieeprig28ohmgsjocc.apps.googleusercontent.com",
           "client_type": 3
         }
