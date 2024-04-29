@@ -13,7 +13,7 @@ data class PesananModel(
 //    var transferProofImageLink = "",
     var status_pesanan: StatusPesanan,
     var waktu_pesanan_dibuat : Timestamp?,
-    var daftar_katalis_pesanan: DaftarKatalis = DaftarKatalis(),
+    var daftarKatalis: Map<String, Int> = emptyMap(),
     var geolokasi_tujuan : String = "",
     var ongkir : Float = 0f,
     var catatan : String= ""

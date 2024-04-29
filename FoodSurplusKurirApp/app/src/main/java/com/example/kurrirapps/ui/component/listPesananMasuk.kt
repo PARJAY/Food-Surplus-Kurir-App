@@ -60,7 +60,7 @@ fun ListPesanan(
             horizontalArrangement = Arrangement.End
         ) {
             Button(
-                onClick = { onNavigateToScreen(Screen.KonfirmDgnFoto.route) },
+                onClick = { onNavigateToScreen(Screen.ScreenRingkasanPesanan.route) },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
             ) {
                 Text(

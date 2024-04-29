@@ -11,3 +11,11 @@ data class PesananListScreenUiState(
     val pesananList: List<PesananModel> = emptyList(),
     val transaksiListState: List<PesananModel> = emptyList(),
 )
+
+data class SelectedKatalis(
+    val idKatalis: String,
+    var quantity: Int ,
+    var namaKatalis : String = "",
+    var hargaKatalis : Float = 0F,
+    var stokKatalis : Int,
+)

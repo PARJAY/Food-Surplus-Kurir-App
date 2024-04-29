@@ -3,6 +3,7 @@ package com.example.kurrirapps.tools
 import android.net.Uri
 import android.util.Log
 import com.example.dummyfirebaseauth.MyApp
+import com.example.kurrirapps.data.model.KatalisModel
 import com.example.kurrirapps.data.model.KurirModel
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusKurir
@@ -13,6 +14,26 @@ import com.google.firebase.firestore.DocumentSnapshot
 class FirebaseHelper {
 
     companion object {
+
+        fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: DocumentSnapshot): KatalisModel {
+            val komposisi = queryDocumentSnapshot.getString("idHotel") ?: ""
+            val hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f
+
+            Log.d("Helper", "$komposisi - ${komposisi::class.simpleName}")
+            Log.d("Helper", "$hargaAwal - ${hargaAwal::class.simpleName}")
+
+            return KatalisModel(
+                id = queryDocumentSnapshot.id,
+                idHotel = queryDocumentSnapshot.getString("idHotel") ?: "",
+                namaKatalis = queryDocumentSnapshot.getString("namaKatalis") ?: "",
+                imageLink = queryDocumentSnapshot.getString("imageLink")?: "",
+                stok = queryDocumentSnapshot.getLong("stok")?.toInt() ?: 0 ,
+                komposisi = queryDocumentSnapshot.getString("komposisi")?.split(",") ?: emptyList(),
+                hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,
+                hargaJual = queryDocumentSnapshot.getLong("hargaJual")?.toFloat() ?: 0.0f,
+                porsiJual = queryDocumentSnapshot.getString("porsiJual") ?: "",
+            )
+        }
 
         fun fetchSnapshotToKurirModel(queryDocumentSnapshot: DocumentSnapshot): KurirModel {
 
@@ -83,7 +104,6 @@ class FirebaseHelper {
                 id_kurir = queryDocumentSnapshot.getString("id_kurir") ?: "",
                 id_hotel = queryDocumentSnapshot.getString("id_hotel") ?: "",
                 status_pesanan = statusKurir,
-                daftar_katalis_pesanan = daftarKatalis,
                 geolokasi_tujuan = queryDocumentSnapshot.getString("geolokasi_tujuan") ?: "",
                 ongkir = queryDocumentSnapshot.getLong("ongkir")?.toFloat() ?: 0.0f,
                 waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat")

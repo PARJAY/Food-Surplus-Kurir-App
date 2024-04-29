@@ -51,6 +51,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "608371446284-gm3ecs66jtjoj53qqvrj5krjgta4iklc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kurrirapps",
+            "certificate_hash": "4eda1cc53c0b7303490a53b67ec5f45aded62491"
+          }
+        },
+        {
           "client_id": "608371446284-p6jqm6s5hae9s5i9k593aj9g9japetr0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

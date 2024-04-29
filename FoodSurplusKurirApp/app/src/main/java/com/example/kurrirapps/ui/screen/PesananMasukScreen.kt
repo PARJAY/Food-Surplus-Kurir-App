@@ -49,6 +49,7 @@ import com.example.kurrirapps.ui.theme.Brown
 fun PesananMasuk(
     userData: UserData?,
     onNavigateToScreen: (String) -> Unit,
+    onSetSelectedDetailPesanan: (PesananModel) -> Unit,
 ) {
     val contex = LocalContext.current
 
@@ -159,11 +160,13 @@ fun PesananMasuk(
             }
         }
 
-        items(pesananHotel) {
-            if (it.status_pesanan == StatusPesanan.TERKONFIRMASI_ADMIN) {
+        items(pesananHotel) {pesanan ->
+            if (pesanan.status_pesanan == StatusPesanan.TERKONFIRMASI_ADMIN) {
                 ListPesanan(
-                    onNavigateToScreen = onNavigateToScreen,
-                    pesananModel = it
+                    onNavigateToScreen = {
+                        onSetSelectedDetailPesanan(pesanan)
+                        onNavigateToScreen(it)},
+                    pesananModel = pesanan
                 )
             }
         }

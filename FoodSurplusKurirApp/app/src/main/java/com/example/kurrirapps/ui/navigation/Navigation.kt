@@ -2,7 +2,6 @@ package com.example.kurrirapps.ui.navigation
 
 import ScreenViewHotelModel
 import android.app.Activity.RESULT_OK
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,8 +9,8 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,22 +23,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dummyfirebaseauth.MyApp
-import com.example.kurrirapps.presentation.Hotel_List.HotelListScreenViewModel
 import com.example.kurrirapps.data.model.KurirModel
+import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.data.repository.KurirRepositoryImpl
-import com.example.kurrirapps.feature.EnumPhotoCapture
+import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.presentation.auth.GoogleAuthClient
 import com.example.kurrirapps.presentation.auth.SignInViewModel
 import com.example.kurrirapps.presentation.kurir.KurirViewModel
 import com.example.kurrirapps.presentation.pesanan.PesananRepository
 import com.example.kurrirapps.presentation.pesanan.PesananViewModel
+import com.example.kurrirapps.presentation.pesanan.SelectedKatalis
 import com.example.kurrirapps.ui.screen.KonfirmDgnFoto
 import com.example.kurrirapps.ui.screen.LoginScreen
 import com.example.kurrirapps.ui.screen.PesananMasuk
+import com.example.kurrirapps.ui.screen.ScreenRingkasanPesanan
 import com.example.kurrirapps.ui.screen.profileScreen
 import com.example.kurrirapps.ui.screen.screenAkhir
 import com.example.kurrirapps.viewModelFactory
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -57,6 +59,16 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
             oneTapClient = Identity.getSignInClient(context)
         )
     }
+
+    val selectedKatalis = remember { mutableStateListOf<SelectedKatalis>() }
+
+    var selectedDetailPesanan by remember { mutableStateOf(PesananModel(
+        status_pesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
+        waktu_pesanan_dibuat = Timestamp.now()
+            )
+        )
+    }
+
 
     NavHost(navController , startDestination = Screen.ScreenLogin.route ) {
         composable(Screen.ScreenLogin.route) {
@@ -160,7 +172,14 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
             PesananMasuk(
                 userData = googleAuthUiClient.getSignedInUser(),
                 onNavigateToScreen = { navController.navigate(it) },
+                onSetSelectedDetailPesanan = { selectedDetailPesanan = it }
             )
+
+        }
+
+        composable(Screen.ScreenRingkasanPesanan.route) {
+            ScreenRingkasanPesanan(selectedDetailPesanan = selectedDetailPesanan,
+                selectedKatalis =  selectedKatalis)
 
         }
 

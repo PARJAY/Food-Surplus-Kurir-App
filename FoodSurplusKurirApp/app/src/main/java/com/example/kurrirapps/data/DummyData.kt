@@ -16,12 +16,6 @@ class DummyData {
             "23",
             StatusPesanan.TERKONFIRMASI_ADMIN,
             Timestamp.now(),
-            DaftarKatalis(
-                daftarKatalis = mapOf(
-                    Pair("idKatalisDummy1", 1),
-                    Pair("idKatalisDummy2", 1)
-                )
-            ),
             geolokasi_tujuan = "0.0,0.0",
             ongkir = 0f,
             catatan = ""
@@ -34,12 +28,6 @@ class DummyData {
             "23",
             StatusPesanan.TERKONFIRMASI_ADMIN,
             Timestamp.now(),
-            DaftarKatalis(
-                daftarKatalis = mapOf(
-                    Pair("idKatalisDummy1", 2),
-                    Pair("idKatalisDummy2", 2)
-                )
-            ),
             geolokasi_tujuan = "0.0,0.0",
             ongkir = 0f,
             catatan = ""
@@ -52,12 +40,6 @@ class DummyData {
             "23",
             StatusPesanan.TERKONFIRMASI_ADMIN,
             Timestamp.now(),
-            DaftarKatalis(
-                daftarKatalis = mapOf(
-                    Pair("idKatalisDummy1", 3),
-                    Pair("idKatalisForDummyKatalisFinding", 3)
-                )
-            ),
             geolokasi_tujuan = "0.0,0.0",
             ongkir = 0f,
             catatan = ""

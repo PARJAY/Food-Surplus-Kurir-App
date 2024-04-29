@@ -1,6 +1,7 @@
 package com.example.kurrirapps.di
 
 import com.example.kurrirapps.data.repository.HotelRepositoryImpl
+import com.example.kurrirapps.data.repository.KatalisRepositoryImpl
 import com.example.kurrirapps.data.repository.KurirRepositoryImpl
 import com.example.kurrirapps.data.repository.PesananRepositoryImpl
 import com.example.kurrirapps.presentation.pesanan.PesananRepository
@@ -25,5 +26,8 @@ class AppModuleImpl : AppModule {
     }
     override val hotelRepository: HotelRepositoryImpl by lazy {
         HotelRepositoryImpl(db)
+    }
+     val katalisRepository: KatalisRepositoryImpl by lazy {
+        KatalisRepositoryImpl(db)
     }
 }
