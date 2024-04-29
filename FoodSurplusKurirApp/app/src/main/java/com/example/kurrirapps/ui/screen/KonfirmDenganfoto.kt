@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -49,6 +50,7 @@ import com.example.kurrirapps.presentation.pesanan.PesananViewModel
 import com.example.kurrirapps.tools.FirebaseHelper
 import com.example.kurrirapps.ui.component.SisipkanPesan
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.example.kurrirapps.ui.theme.yellow
 import java.util.Objects
 
@@ -245,8 +247,12 @@ fun KonfirmDgnFoto(
 
 //@Preview(showBackground = true)
 //@Composable
-//fun KonfirmdgnFotoPreview() {
+//fun KonfirmDgnFotoPreview() {
 //    KurrirAppsTheme {
-//        KonfirmDgnFoto(onNavigateToScreen ={})
+//        KonfirmDgnFoto(
+//            userData =  UserData(),
+//            onNavigateToPesananMasukScreen={},
+//        pesananViewModel = PesananViewModel()
+//        )
 //    }
 //}

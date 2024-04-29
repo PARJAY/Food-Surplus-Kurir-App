@@ -5,6 +5,7 @@ import android.service.autofill.UserData
 import android.widget.Toast
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -25,7 +26,8 @@ import com.example.kurrirapps.tools.FirebaseHelper.Companion.uploadImageToFireba
 import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 
 @Composable
-fun Konfirmasi(onNavigateToPesananMasukScreen:()->Unit,userData :com.example.kurrirapps.presentation.auth.UserData) {
+fun Konfirmasi(onNavigateToPesananMasukScreen:()->Unit,
+               userData :com.example.kurrirapps.presentation.auth.UserData) {
     val context = LocalContext.current
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(Uri.EMPTY)
@@ -34,7 +36,8 @@ fun Konfirmasi(onNavigateToPesananMasukScreen:()->Unit,userData :com.example.kur
     Button(
         modifier = Modifier
             .height(50.dp)
-            .width(180.dp),
+            .width(250.dp),
+        shape = RoundedCornerShape(0.dp),
         onClick = {
             if (selectedImageUri?.path!!.isEmpty()) {
                 Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
@@ -58,7 +61,7 @@ fun Konfirmasi(onNavigateToPesananMasukScreen:()->Unit,userData :com.example.kur
             contentColor = Color.Black,
         ),
     ) {
-        Text(text = "Konfirmasi",
+        Text(text = "Konfirmasi Pesanan",
             style = TextStyle(
                 fontSize = (20.sp),
                 fontWeight = FontWeight.Bold
@@ -68,12 +71,13 @@ fun Konfirmasi(onNavigateToPesananMasukScreen:()->Unit,userData :com.example.kur
     }
 
 }
-//@Preview(showBackground = true)
-//@Composable
-//fun Konfirmasipreview(){
-//    KurrirAppsTheme {
-//        Konfirmasi(
-//            onNavigateToPesananMasukScreen = {}
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun Konfirmasipreview(){
+    KurrirAppsTheme {
+        Konfirmasi(
+            onNavigateToPesananMasukScreen = {},
+            userData = com.example.kurrirapps.presentation.auth.UserData()
+        )
+    }
+}

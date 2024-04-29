@@ -2,6 +2,7 @@ package com.example.kurrirapps.ui.screen
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,14 +31,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.kurrirapps.R
 import com.example.kurrirapps.presentation.auth.UserData
-import com.example.kurrirapps.ui.component.Konfirmasi
 import com.example.kurrirapps.ui.component.SisipkanPesan
-import com.example.kurrirapps.ui.component.TopBar
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.example.kurrirapps.ui.theme.yellow
 import java.io.File
 import java.util.Date
@@ -95,9 +105,21 @@ fun screenAkhir(
                    .fillMaxWidth(),
                horizontalAlignment = Alignment.CenterHorizontally
            ){
+
+                   Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+                       contentDescription = null,
+                   modifier = Modifier
+                       .width(250.dp)
+                       .height(250.dp),)
+               Spacer(modifier = Modifier.height(30.dp))
+               Text(text = "Konfirmasi Pesanan",
+                   style = TextStyle(
+                       fontSize = (28.sp),
+                       fontWeight = FontWeight.Bold
+                   )
+               )
+               Spacer(modifier = Modifier.width(20.dp))
                if (captureImageUri.path?.isNotEmpty() == true)
-
-
                {
                  AsyncImage(model = captureImageUri, contentDescription =null,
                      modifier = Modifier.size(250.dp))
@@ -105,6 +127,42 @@ fun screenAkhir(
                Spacer(modifier = Modifier.height(40.dp))
                SisipkanPesan()
 //               Konfirmasi(onNavigateToPesananMasukScreen)
+               Button(
+                   modifier = Modifier
+                       .height(50.dp)
+                       .width(250.dp),
+                   shape = RoundedCornerShape(0.dp),
+                   onClick = {
+//                       if (selectedImageUri?.path!!.isEmpty()) {
+//                           Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
+//                       } else {
+//                           FirebaseHelper.uploadImageToFirebaseStorage(
+//                               "User ${userData.userId}",
+//                               selectedImageUri!!,
+//                               onSuccess = {
+//                                   Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+//                               },
+//                               onError = {
+//                                   Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
+//                               }
+//                           )
+//
+//                           onNavigateToPesananMasukScreen()
+//                       }
+                   },
+                   colors = ButtonDefaults.buttonColors(
+                       containerColor = Color.Green,
+                       contentColor = Color.Black,
+                   ),
+               ) {
+                   Text(text = "Konfirmasi Pesanan",
+                       style = TextStyle(
+                           fontSize = (20.sp),
+                           fontWeight = FontWeight.Bold
+                       )
+                   )
+
+               }
 
            }
            fun Context.createImagefile(): File {
@@ -133,10 +191,14 @@ fun screenAkhir(
 
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun sisipkanPesanPreview(){
-//    KurrirAppsTheme {
-//        screenAkhir(onNavigateToPesananMasukScreen = {})
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun screenAkhirPreview() {
+    KurrirAppsTheme {
+        screenAkhir(
+            userData=UserData(),
+            onNavigateToPesananMasukScreen = {},
+            onNavigateToScreen={}
+        )
+    }
+}

@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -41,8 +42,11 @@ import com.example.kurrirapps.presentation.pesanan.PesananListScreenUiState
 import com.example.kurrirapps.ui.component.listPesanan
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.example.kurrirapps.ui.theme.yellow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 
 
 @Composable
@@ -78,6 +82,7 @@ fun PesananMasuk(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(yellow)
+                    .padding(start = 16.dp, end = 16.dp)
             )
             Column(
                 modifier = Modifier
@@ -130,7 +135,48 @@ fun PesananMasuk(
                 Spacer(modifier = Modifier.height(40.dp))
 //
             }
-            Column {
+            Column(
+                modifier = Modifier
+                    .padding(20.dp,)
+            ){
+                listPesanan(
+                    onNavigateToScreen = onNavigateToScreen,
+                    pesananModel = PesananModel(
+                        "sup ayam",
+                        "23456",
+                        "3478",
+                        "000099888",
+                        DaftarPesanan(
+                            "adsasd",
+                            "adasdas",
+                            "sdasdasd",
+                            12
+                        ),
+                        100000f,
+                        StatusPesanan.SUDAH_SAMPAI
+                    ),
+                    onPesananMasukEvent
+                )
+                Spacer(modifier = Modifier.padding(top = 15.dp))
+                listPesanan(
+                    onNavigateToScreen = onNavigateToScreen,
+                    pesananModel = PesananModel(
+                        "sup ayam",
+                        "23456",
+                        "3478",
+                        "000099888",
+                        DaftarPesanan(
+                            "adsasd",
+                            "adasdas",
+                            "sdasdasd",
+                            12
+                        ),
+                        100000f,
+                        StatusPesanan.SUDAH_SAMPAI
+                    ),
+                    onPesananMasukEvent
+                )
+                Spacer(modifier = Modifier.padding(top = 15.dp))
                 listPesanan(
                     onNavigateToScreen = onNavigateToScreen,
                     pesananModel = PesananModel(
@@ -160,13 +206,19 @@ fun PesananMasuk(
 
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PesananPreview() {
-//    KurrirAppsTheme {
-//        PesananMasuk(onNavigateToScreen = {},
-//            )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun PesananPreview() {
+    KurrirAppsTheme {
+        PesananMasuk(
+            onNavigateToScreen = {},
+            pesananListScreenUiState = PesananListScreenUiState(),
+            userData = UserData(),
+            onPesananMasukEvent = {},
+            hotelListScreenEffectFlow = flowOf(),
+            hotelListScreenUiState = HotelListScreenUiState()
+        )
+    }
+}
 
 //onClick = {navController.navigate("klikFoto")},

@@ -21,11 +21,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.kurrirapps.Hotel_List.HotelListScreenUiState
 import com.example.kurrirapps.presentation.auth.UserData
+import com.example.kurrirapps.presentation.pesanan.PesananListScreenUiState
+import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.example.kurrirapps.ui.theme.yellow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun profileScreen(
@@ -78,5 +83,17 @@ fun profileScreen(
 
         }
 
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun profileScreenPreview() {
+    KurrirAppsTheme {
+        profileScreen(
+            userData=UserData(),
+            onSignOut= {},
+            onNavigateToScreen={}
+        )
     }
 }

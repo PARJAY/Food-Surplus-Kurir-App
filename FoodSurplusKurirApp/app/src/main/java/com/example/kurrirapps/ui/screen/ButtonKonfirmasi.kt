@@ -1,18 +1,22 @@
 package com.example.kurrirapps.ui.screen
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 
 
 @Composable
-fun ButtonKonfirmasi(navController: NavController){
+fun ButtonKonfirmasi(
+    onNavigateToScreen:(String)->Unit,
+){
     Column {
-        Button(onClick = {navController.navigate("pesananMasuk")}) {
+        Button(onClick = {onNavigateToScreen(Screen.PesananMasuk.route)}) {
            Text(text = "Konfirmasi")
         }
     }
@@ -21,6 +25,8 @@ fun ButtonKonfirmasi(navController: NavController){
 @Composable
 fun konfirmasiPreview() {
     KurrirAppsTheme {
-//        ButtonKonfirmasi()
+        ButtonKonfirmasi(
+        onNavigateToScreen = {}
+        )
     }
 }
