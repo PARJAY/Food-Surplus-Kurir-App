@@ -70,7 +70,8 @@ fun LoginScreen(
                 ){
             Column (
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ){
                 Spacer(modifier = Modifier.height(45.dp))
@@ -83,7 +84,7 @@ fun LoginScreen(
                 )
                 Spacer(modifier = Modifier.height(40.dp))
                 Text(
-                    text = "Selamat Datang Silahkan Login Dengan Akun User Anda",
+                    text = "Selamat Datang di Kurir App, Silahkan Login dengan Akun Google Anda",
                     style = TextStyle(
                         fontSize = (26.sp),
                         color = (Color.Black),

@@ -7,5 +7,5 @@ data class KurirModel (
     val name : String = "",
     val phoneNumber : String = "",
     val statusKurir: StatusKurir = StatusKurir.IDLE,
-    val idhotel : String =""
+    val idHotel : String = ""
 )

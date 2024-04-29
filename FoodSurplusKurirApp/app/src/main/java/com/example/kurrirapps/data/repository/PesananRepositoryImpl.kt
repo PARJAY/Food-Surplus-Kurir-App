@@ -28,15 +28,16 @@ class PesananRepositoryImpl(private val db : FirebaseFirestore) : RepositoryPesa
 
             snapshot!!.documentChanges.forEach { change ->
                 val pesananModel = fetchSnapshotToPesanan(change.document)
-                when (change.type) {
-                    DocumentChange.Type.ADDED -> pesananModelSnapshots.add(pesananModel)
-                    DocumentChange.Type.MODIFIED -> {
-                        val index = pesananModelSnapshots.indexOfFirst { it.id_pesanan == change.document.id }
-                        if (index != -1) pesananModelSnapshots[index] = pesananModel
-                    }
 
-                    DocumentChange.Type.REMOVED -> pesananModelSnapshots.removeAll { it.id_pesanan== change.document.id }
-                }
+                if (pesananModel != null)
+                    when (change.type) {
+                        DocumentChange.Type.ADDED -> pesananModelSnapshots.add(pesananModel)
+                        DocumentChange.Type.MODIFIED -> {
+                            val index = pesananModelSnapshots.indexOfFirst { it.id == change.document.id }
+                            if (index != -1) pesananModelSnapshots[index] = pesananModel
+                        }
+                        DocumentChange.Type.REMOVED -> pesananModelSnapshots.removeAll { it.id== change.document.id }
+                    }
                 Log.d("REPOSITORY: ", "Data In -> ${change.type} - ${change.document}")
             }
 
@@ -44,16 +45,8 @@ class PesananRepositoryImpl(private val db : FirebaseFirestore) : RepositoryPesa
         }
     }
 
-
-    suspend fun getPesananById(pesananId: String): PesananModel {
-        val documentSnapshot = db.collection(PESANAN_COLLECTION).document().get().await()
-        Log.d("Get Pesanan By Id", "${documentSnapshot.data}")
-
-        return FirebaseHelper.fetchSnapshotToPesanan(documentSnapshot)
-    }
-
     suspend fun addOrUpdatePesanan(pesananId: String, newStok: PesananModel) {
-        db.collection(PESANAN_COLLECTION).document().set(newStok).await()
+        db.collection(PESANAN_COLLECTION).document(pesananId).set(newStok).await()
     }
 
 

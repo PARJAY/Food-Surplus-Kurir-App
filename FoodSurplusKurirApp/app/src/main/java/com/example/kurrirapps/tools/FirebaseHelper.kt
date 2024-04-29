@@ -7,7 +7,7 @@ import com.example.kurrirapps.data.model.KurirModel
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusKurir
 import com.example.kurrirapps.logic.StatusPesanan
-import com.example.kurrirapps.model.DaftarPesanan
+import com.example.kurrirapps.model.DaftarKatalis
 import com.google.firebase.firestore.DocumentSnapshot
 
 class FirebaseHelper {
@@ -19,15 +19,17 @@ class FirebaseHelper {
             val statusKurirQS = queryDocumentSnapshot.getString("statusKurir") ?: ""
             var statusKurir: StatusKurir = StatusKurir.OFF
 
-            if (statusKurirQS == "IDLE") statusKurir = StatusKurir.IDLE
-            else if (statusKurirQS == "OFF") statusKurir = StatusKurir.OFF
-            else if (statusKurirQS == "MENGIRIM") statusKurir = StatusKurir.MENGIRIM
+            when (statusKurirQS) {
+                "IDLE" -> statusKurir = StatusKurir.IDLE
+                "OFF" -> statusKurir = StatusKurir.OFF
+                "MENGIRIM" -> statusKurir = StatusKurir.MENGIRIM
+            }
 
             return KurirModel(
                 id = queryDocumentSnapshot.id,
                 name = queryDocumentSnapshot.getString("name") ?: "",
                 phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
-                idhotel = queryDocumentSnapshot.getString("idHotel") ?: "",
+                idHotel = queryDocumentSnapshot.getString("idHotel") ?: "",
                 statusKurir = statusKurir
             )
         }
@@ -54,24 +56,37 @@ class FirebaseHelper {
                 onError(exception)
             }
         }
+
         fun fetchSnapshotToPesanan(queryDocumentSnapshot: DocumentSnapshot): PesananModel {
+            val statusPesananQS = queryDocumentSnapshot.getString("status_pesanan") ?: ""
+            var statusKurir : StatusPesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN
 
-            val statusPesanan = queryDocumentSnapshot.getLong("statusPesanan")?.toInt()
-            var statuspesanan : StatusPesanan = StatusPesanan.SUDAH_DIPESAN
+            when (statusPesananQS) {
+                "MENUNGGU_KONFIRMASI_ADMIN" -> statusKurir = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN
+                "TIDAK_DISETUJUI_ADMIN" -> statusKurir = StatusPesanan.TIDAK_DISETUJUI_ADMIN
+                "TERKONFIRMASI_ADMIN" -> statusKurir = StatusPesanan.TERKONFIRMASI_ADMIN
+                "DIANTAR" -> statusKurir = StatusPesanan.DIANTAR
+                "SAMPAI" -> statusKurir = StatusPesanan.SAMPAI
+                "SELESA" -> statusKurir = StatusPesanan.SELESAI
+            }
 
-            if (statusPesanan == 0)  statuspesanan = StatusPesanan.SUDAH_DIPESAN
-            else if (statusPesanan == 1 ) statuspesanan = StatusPesanan.SEDANG_DIANTAR
-            else if (statusPesanan == 2 ) statuspesanan = StatusPesanan.SUDAH_SAMPAI
+            val daftarKatalis = DaftarKatalis()
+
+            (queryDocumentSnapshot.data?.get("daftarKatalis") as? Map<*, *>)?.forEach { (key, value) ->
+                Log.d("ListPesananKatalis Repo", "key : $key, value : $value")
+                daftarKatalis.daftarKatalis += Pair(key.toString(), value.toString().toInt())
+            }
 
             return PesananModel(
-                id_pesanan = queryDocumentSnapshot.id,
-                id_list_daftar_pesanan =  DaftarPesanan(),
-                id_hotel = queryDocumentSnapshot.id,
-                id_user = queryDocumentSnapshot.id,
-                id_kurir = queryDocumentSnapshot.id ,
-                total_harga = queryDocumentSnapshot.getLong("totalharga")?.toFloat() ?: 0.0f,
-                status_pesanan = statuspesanan,
-                catatan = queryDocumentSnapshot.getString("catatan") ?: ""
+                id = queryDocumentSnapshot.id,
+                id_user = queryDocumentSnapshot.getString("id_customer") ?: "",
+                id_kurir = queryDocumentSnapshot.getString("id_kurir") ?: "",
+                id_hotel = queryDocumentSnapshot.getString("id_hotel") ?: "",
+                status_pesanan = statusKurir,
+                daftar_katalis_pesanan = daftarKatalis,
+                geolokasi_tujuan = queryDocumentSnapshot.getString("geolokasi_tujuan") ?: "",
+                ongkir = queryDocumentSnapshot.getLong("ongkir")?.toFloat() ?: 0.0f,
+                waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat")
             )
         }
     }

@@ -13,8 +13,6 @@ import kotlinx.coroutines.tasks.await
 
 class HotelRepositoryImpl(private val db : FirebaseFirestore) {
 
-    val hotelModelSnapshots = mutableListOf<HotelModel>()
-
     private var listenerRegistration: ListenerRegistration? = null
 
     fun getLiveDataHotel(
@@ -23,8 +21,6 @@ class HotelRepositoryImpl(private val db : FirebaseFirestore) {
         updateDataCallback: (HotelModel) -> Unit,
         deleteDataCallback: (documentId: String) -> Unit
     ) {
-
-
         listenerRegistration =
             db.collection(HOTEL_COLLECTION).addSnapshotListener { snapshot, exception ->
                 if (exception != null) {

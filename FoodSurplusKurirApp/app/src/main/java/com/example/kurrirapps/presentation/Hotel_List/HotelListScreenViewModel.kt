@@ -1,4 +1,4 @@
-package com.example.kurrirapps.Hotel_List
+package com.example.kurrirapps.presentation.Hotel_List
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -51,7 +51,11 @@ class HotelListScreenViewModel(private val hotelRepositoryImpl: HotelRepositoryI
                     is FirebaseResult.Failure -> {
                         setState(_state.value.copy(isLoading = false))
                         Log.d("VIEWMODEL: ", "${firebaseResult.exception.message}")
-                        setEffect { HotelListScreenEffects.ShowSnackBarMessage(firebaseResult.exception.message ?: "Error fetching users") }
+                        setEffect {
+                            HotelListScreenEffects.ShowSnackBarMessage(
+                                firebaseResult.exception.message ?: "Error fetching users"
+                            )
+                        }
                     }
                     is FirebaseResult.Success -> {
                         Log.d("VIEWMODEL: ", "${firebaseResult.data}")
@@ -73,7 +77,11 @@ class HotelListScreenViewModel(private val hotelRepositoryImpl: HotelRepositoryI
                 setEffect { HotelListScreenEffects.ShowSnackBarMessage(message = "Hotel deleted successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { HotelListScreenEffects.ShowSnackBarMessage(e.message ?: "Error fetching users") }
+                setEffect {
+                    HotelListScreenEffects.ShowSnackBarMessage(
+                        e.message ?: "Error fetching users"
+                    )
+                }
             }
         }
     }
@@ -88,7 +96,11 @@ class HotelListScreenViewModel(private val hotelRepositoryImpl: HotelRepositoryI
                 setEffect { HotelListScreenEffects.ShowSnackBarMessage(message = "Hotel updated successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { HotelListScreenEffects.ShowSnackBarMessage(e.message ?: "Error fetching hotel") }
+                setEffect {
+                    HotelListScreenEffects.ShowSnackBarMessage(
+                        e.message ?: "Error fetching hotel"
+                    )
+                }
             }
         }
     }
@@ -103,7 +115,11 @@ class HotelListScreenViewModel(private val hotelRepositoryImpl: HotelRepositoryI
                 setEffect { HotelListScreenEffects.ShowSnackBarMessage(message = "Hotel added successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { HotelListScreenEffects.ShowSnackBarMessage(e.message ?: "Error fetching hotel") }
+                setEffect {
+                    HotelListScreenEffects.ShowSnackBarMessage(
+                        e.message ?: "Error fetching hotel"
+                    )
+                }
             }
         }
     }
