@@ -1,8 +1,6 @@
 package com.example.kurrirapps.data.model
 
 import com.example.kurrirapps.logic.StatusPesanan
-import com.example.kurrirapps.model.DaftarKatalis
-import com.example.kurrirapps.model.DaftarPesanan
 import com.google.firebase.Timestamp
 
 data class PesananModel(
@@ -10,13 +8,13 @@ data class PesananModel(
     var id_user: String = "",
     var id_hotel: String="",
     var id_kurir: String="",
-//    var transferProofImageLink = "",
     var status_pesanan: StatusPesanan,
     var waktu_pesanan_dibuat : Timestamp?,
     var daftarKatalis: Map<String, Int> = emptyMap(),
     var geolokasi_tujuan : String = "",
     var ongkir : Float = 0f,
-    var catatan : String= ""
+    var catatan : String= "",
+    var alamatTujuan : String= ""
 )
 
 data class SetPesananStatusModel(

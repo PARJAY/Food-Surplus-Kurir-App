@@ -73,41 +73,6 @@ fun PesananMasuk(
         )
     }
 
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .background(Brown)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.SpaceBetween
-        ) {
-            if (userData?.username != null) {
-                Text(
-                    text = userData.username,
-                    color = Color.White
-                )
-            }
-            if (userData?.profilePictureUrl != null) {
-                AsyncImage(
-                    model = userData.profilePictureUrl,
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clip(CircleShape)
-                        .clickable {
-                            onNavigateToScreen(Screen.ScreenProfile.route)
-                        },
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
-    }
-
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Row (
@@ -141,10 +106,12 @@ fun PesananMasuk(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Pesanan Masuk",
                     style = androidx.compose.ui.text.TextStyle(
@@ -152,20 +119,23 @@ fun PesananMasuk(
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(30.dp))
             }
         }
 
         items(pesananHotel) {pesanan ->
             if (pesanan.status_pesanan == StatusPesanan.TERKONFIRMASI_ADMIN) {
-                ListPesananMasukScreen(
-                    onNavigateToScreen = {
-                        onSetSelectedDetailPesanan(pesanan)
-                        Log.d("PesananMasukScreen", "$pesanan")
-                        onNavigateToScreen(it)
-                    },
-                    pesananModel = pesanan
-                )
+                Column(modifier = Modifier.padding(8.dp)) {
+                    ListPesananMasukScreen(
+                        onNavigateToScreen = {
+                            onSetSelectedDetailPesanan(pesanan)
+                            Log.d("PesananMasukScreen", "$pesanan")
+                            onNavigateToScreen(it)
+                        },
+                        pesananModel = pesanan
+                    )
+                    Spacer(modifier = Modifier.height(0.dp))
+                }
             }
         }
     }

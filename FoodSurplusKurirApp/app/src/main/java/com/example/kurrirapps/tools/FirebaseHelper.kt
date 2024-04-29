@@ -30,7 +30,7 @@ class FirebaseHelper {
                 stok = queryDocumentSnapshot.getLong("stok")?.toInt() ?: 0 ,
                 komposisi = queryDocumentSnapshot.getString("komposisi")?.split(",") ?: emptyList(),
                 hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,
-                hargaJual = queryDocumentSnapshot.getLong("hargaJual")?.toFloat() ?: 0.0f,
+                hargaJual = queryDocumentSnapshot.getLong("hargaPerPorsi")?.toFloat() ?: 0.0f,
                 porsiJual = queryDocumentSnapshot.getString("porsiJual") ?: "",
             )
         }
@@ -107,7 +107,8 @@ class FirebaseHelper {
                 geolokasi_tujuan = queryDocumentSnapshot.getString("geolokasi_tujuan") ?: "",
                 ongkir = queryDocumentSnapshot.getLong("ongkir")?.toFloat() ?: 0.0f,
                 daftarKatalis = daftarKatalis.daftarKatalis,
-                waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat")
+                waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat"),
+                alamatTujuan = queryDocumentSnapshot.getString("alamatTujuan") ?: ""
             )
         }
     }

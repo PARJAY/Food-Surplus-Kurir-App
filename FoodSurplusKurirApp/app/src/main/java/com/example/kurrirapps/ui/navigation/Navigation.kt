@@ -32,14 +32,13 @@ import com.example.kurrirapps.presentation.auth.SignInViewModel
 import com.example.kurrirapps.presentation.kurir.KurirViewModel
 import com.example.kurrirapps.presentation.pesanan.PesananRepository
 import com.example.kurrirapps.presentation.pesanan.PesananViewModel
-import com.example.kurrirapps.presentation.pesanan.SelectedKatalis
+import com.example.kurrirapps.presentation.pesanan.SelectedPesanan
 import com.example.kurrirapps.ui.screen.KonfirmDgnFoto
 import com.example.kurrirapps.ui.screen.LoginScreen
 import com.example.kurrirapps.ui.screen.PesananMasuk
 import com.example.kurrirapps.ui.screen.ScreenRingkasanPesanan
 import com.example.kurrirapps.ui.screen.profileScreen
 import com.example.kurrirapps.ui.screen.screenAkhir
-import com.example.kurrirapps.viewModelFactory
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -60,7 +59,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
         )
     }
 
-    val selectedKatalis = remember { mutableStateListOf<SelectedKatalis>() }
+    val selectedKatalis = remember { mutableStateListOf<SelectedPesanan>() }
 
     var selectedDetailPesanan by remember { mutableStateOf(PesananModel(
         status_pesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
@@ -76,7 +75,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
 
             LaunchedEffect(key1 = Unit) {
                 if (googleAuthUiClient.getSignedInUser() != null) {
-                    navController.navigate(Screen.ViewHotelModel.route)
+                    navController.navigate(Screen.PesananMasuk.route)
                 }
             }
 
@@ -190,7 +189,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                 },
                 pesananViewModel = PesananViewModel(
                     PesananRepository(db = FirebaseFirestore.getInstance())
-                )
+                ),
+                selectedDetailPesanan = selectedDetailPesanan
             )
 
         }

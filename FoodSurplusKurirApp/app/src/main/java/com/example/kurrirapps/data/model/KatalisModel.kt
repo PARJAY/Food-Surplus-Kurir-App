@@ -10,4 +10,5 @@ data class KatalisModel(
     val hargaAwal: Float = 0f,
     val hargaJual: Float = 0f,
     val porsiJual: String = "",
+    val lokasiTujuan: String = ""
 )
