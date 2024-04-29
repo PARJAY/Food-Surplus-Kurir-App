@@ -47,17 +47,18 @@ import java.util.Date
 
 @Composable
 fun ScreenRingkasanPesanan(
-    selectedDetailPesanan: PesananModel,
-    selectedKatalis: SnapshotStateList<SelectedKatalis>,
-    ){
-    var captureImageUri by remember {
+    selectedDetailPesanan: PesananModel
+) {
+
+    val captureImageUri by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
-    var hotelToUserDistanceInMeter by remember { mutableFloatStateOf(0f) }
+    val hotelToUserDistanceInMeter by remember { mutableFloatStateOf(0f) }
 
     val selectedKatalisList = remember { mutableStateListOf<SelectedKatalis>() }
 
     LaunchedEffect(Unit) {
+        Log.d("Ringkasan Pesanan Screen", "Launched?")
         Log.d("Ringkasan Pesanan Screen", "Launched?")
         selectedDetailPesanan.daftarKatalis.forEach { (key, value) ->
             Log.d("Ringkasan Pesanan Screen", "Katalis key : $key || katalis value : $value")
@@ -80,11 +81,11 @@ fun ScreenRingkasanPesanan(
 
     Box (modifier = Modifier
         .fillMaxSize()
-        .background(Color.Yellow)){
+        .background(Color.Yellow)
+    ) {
 
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -95,7 +96,7 @@ fun ScreenRingkasanPesanan(
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                     Text(text = "Ringkasan Pesanan")
-                RingkasanPesanan(selectedKatalis = selectedKatalis, hotelToUserDistanceInMeter)
+                RingkasanPesanan(selectedKatalis = selectedKatalisList, hotelToUserDistanceInMeter)
                 }
                 Image(painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = null,
@@ -155,23 +156,23 @@ fun ScreenRingkasanPesanan(
 
                 }
 
-            }
-            fun Context.createImagefile(): File {
-                val timeStamp = SimpleDateFormat("YYYY_MM_dd_HH:mm:ss").format(Date())
-                val imageFileName = "JPEG_" + timeStamp + "_"
-                val image = File.createTempFile(
-                    imageFileName,
-                    ".jpg,",
-                    externalCacheDir
+        }
 
-                )
-                return image
+    fun Context.createImagefile(): File {
+            val timeStamp = SimpleDateFormat("YYYY_MM_dd_HH:mm:ss").format(Date())
+            val imageFileName = "JPEG_" + timeStamp + "_"
+            val image = File.createTempFile(
+                imageFileName,
+                ".jpg,",
+                externalCacheDir
 
-            }
-
+            )
+            return image
         }
 
     }
+
+}
 
 
 

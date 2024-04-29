@@ -12,8 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -23,13 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
-import com.example.kurrirapps.presentation.pesanan.PesananEvent
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.google.firebase.Timestamp
 
 @Composable
-fun ListPesanan(
+fun ListPesananMasukScreen(
     onNavigateToScreen:(String)->Unit,
     pesananModel: PesananModel
 ) {
@@ -41,7 +38,8 @@ fun ListPesanan(
             )
             .padding(8.dp),
     ) {
-        Text(text = pesananModel.id_user,
+        Text(
+            text = pesananModel.id_user,
             style = TextStyle(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -81,7 +79,7 @@ fun ListPesanan(
 @Composable
 fun KonfirmasiPreview(){
     KurrirAppsTheme {
-        ListPesanan(
+        ListPesananMasukScreen(
             onNavigateToScreen = {},
             pesananModel = PesananModel(
                 id = "id? ngapain nampilin Id?",

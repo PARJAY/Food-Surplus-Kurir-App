@@ -20,11 +20,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,8 +36,7 @@ import com.example.dummyfirebaseauth.MyApp
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.presentation.auth.UserData
-import com.example.kurrirapps.presentation.pesanan.PesananEvent
-import com.example.kurrirapps.ui.component.ListPesanan
+import com.example.kurrirapps.ui.component.ListPesananMasukScreen
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
 
@@ -162,10 +158,12 @@ fun PesananMasuk(
 
         items(pesananHotel) {pesanan ->
             if (pesanan.status_pesanan == StatusPesanan.TERKONFIRMASI_ADMIN) {
-                ListPesanan(
+                ListPesananMasukScreen(
                     onNavigateToScreen = {
                         onSetSelectedDetailPesanan(pesanan)
-                        onNavigateToScreen(it)},
+                        Log.d("PesananMasukScreen", "$pesanan")
+                        onNavigateToScreen(it)
+                    },
                     pesananModel = pesanan
                 )
             }

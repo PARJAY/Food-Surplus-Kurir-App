@@ -69,7 +69,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
         )
     }
 
-
     NavHost(navController , startDestination = Screen.ScreenLogin.route ) {
         composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()
@@ -163,9 +162,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
         }
 
         composable(Screen.PesananMasuk.route) {
-            val pesananScreenVM: PesananViewModel = viewModel(
-                factory = viewModelFactory { PesananViewModel(MyApp.appModule.pesananRepository) }
-            )
+//            val pesananScreenVM: PesananViewModel = viewModel(
+//                factory = viewModelFactory { PesananViewModel(MyApp.appModule.pesananRepository) }
+//            )
 
             Log.d("Nav", "uid : ${googleAuthUiClient.getSignedInUser()?.userId}")
 
@@ -174,13 +173,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                 onNavigateToScreen = { navController.navigate(it) },
                 onSetSelectedDetailPesanan = { selectedDetailPesanan = it }
             )
-
         }
 
         composable(Screen.ScreenRingkasanPesanan.route) {
-            ScreenRingkasanPesanan(selectedDetailPesanan = selectedDetailPesanan,
-                selectedKatalis =  selectedKatalis)
-
+            ScreenRingkasanPesanan(
+                selectedDetailPesanan = selectedDetailPesanan
+            )
         }
 
         composable(Screen.KonfirmDgnFoto.route) {

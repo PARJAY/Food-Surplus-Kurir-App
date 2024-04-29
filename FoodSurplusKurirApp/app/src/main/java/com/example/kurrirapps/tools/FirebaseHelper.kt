@@ -106,6 +106,7 @@ class FirebaseHelper {
                 status_pesanan = statusKurir,
                 geolokasi_tujuan = queryDocumentSnapshot.getString("geolokasi_tujuan") ?: "",
                 ongkir = queryDocumentSnapshot.getLong("ongkir")?.toFloat() ?: 0.0f,
+                daftarKatalis = daftarKatalis.daftarKatalis,
                 waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat")
             )
         }

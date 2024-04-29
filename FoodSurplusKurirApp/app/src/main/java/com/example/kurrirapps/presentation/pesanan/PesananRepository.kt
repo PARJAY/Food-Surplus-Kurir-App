@@ -34,7 +34,7 @@ class PesananRepository(private val db : FirebaseFirestore) {
                     DocumentChange.Type.REMOVED -> deleteDataCallback(change.document.id)
                 }
 
-                Log.d("Pesanan Repo: ", "Data In -> ${change.type} - ${change.document}")
+                Log.d("Pesanan Repo: ", "Data In -> ${change.type} - $pesananModel")
             }
         }
     }
