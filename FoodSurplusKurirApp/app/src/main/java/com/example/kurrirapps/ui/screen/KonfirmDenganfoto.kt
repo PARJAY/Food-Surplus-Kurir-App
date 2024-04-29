@@ -45,6 +45,8 @@ import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.presentation.auth.UserData
 import com.example.kurrirapps.presentation.pesanan.PesananViewModel
 import com.example.kurrirapps.tools.FirebaseHelper
+import com.example.kurrirapps.tools.Utils
+import com.example.kurrirapps.tools.Utils.Companion.showToast
 import com.example.kurrirapps.ui.theme.Brown
 import com.example.kurrirapps.ui.theme.yellow
 import java.util.Objects
@@ -63,180 +65,162 @@ fun KonfirmDgnFoto(
         context.packageName + ".provider", file
     )
 
-    var captureImageUri by remember {
-        mutableStateOf<Uri>(Uri.EMPTY)
-    }
-
+    var captureImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
     var text by remember { mutableStateOf("") }
-
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
             captureImageUri = uri
-            Log.d("KonfirmdgnFoto", "data foto : ${uri}")
+            Log.d("KonfirmdgnFoto", "data foto : $uri")
         }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) {}
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(yellow)
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .background(Brown)
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween
-            ) {
-                if (userData?.username != null) {
-                    Text(
-                        text = userData.username,
-                        color = Color.White
-                    )
-                }
 
-            }
+    }
 
-        }
-        Spacer(modifier = Modifier.height(70.dp))
-        Column(
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .height(50.dp)
+                .background(Brown)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Absolute.SpaceBetween
         ) {
+            if (userData?.username != null) {
+                Text(
+                    text = userData.username,
+                    color = Color.White
+                )
+            }
+        }
+    }
 
-            if (captureImageUri == Uri.EMPTY) {
-                Button(
-                    onClick = {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(70.dp))
+
+        if (captureImageUri == Uri.EMPTY) {
+            Button(
+                onClick = {
+                    val permissionCheckResult =
+                        ContextCompat.checkSelfPermission(
+                            context,
+                            android.Manifest.permission.CAMERA
+                        )
+
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                        cameraLauncher.launch(uri)
+                    } else {
+                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    }
+                },
+                modifier = Modifier
+                    .height(300.dp)
+                    .width(250.dp),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text(
+                    text = "Foto konfirmasi Pesanan Sudah Sampai",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = (20.sp),
+
+                        )
+                )
+            }
+        }
+        else {
+            AsyncImage(
+                model = captureImageUri,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(400.dp)
+                    .clickable {
                         val permissionCheckResult =
                             ContextCompat.checkSelfPermission(
                                 context,
                                 android.Manifest.permission.CAMERA
                             )
 
-                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED)
                             cameraLauncher.launch(uri)
-                        } else {
-                            permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                        }
-                    },
-                    modifier = Modifier
-                        .height(300.dp)
-                        .width(250.dp),
-                    shape = RoundedCornerShape(20.dp)
-                ) {
-                    Text(
-                        text = "Foto konfirmasi Pesanan Sudah Sampai",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (20.sp),
+                        else permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    }
+            )
 
-                            )
-                    )
-                }
-            }
-            else {
-                AsyncImage(
-                    model = captureImageUri,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(400.dp)
-                        .clickable {
-                            val permissionCheckResult =
-                                ContextCompat.checkSelfPermission(
-                                    context,
-                                    android.Manifest.permission.CAMERA
-                                )
-
-                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                                cameraLauncher.launch(uri)
-                            } else {
-                                permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                            }
-                        }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Sisipkan Pesan",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                Column(
+                TextField(
+                    value = text,
+                    onValueChange = { newText ->
+                        text = newText
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    label = { Text("Message") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "Sisipkan Pesan",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    TextField(
-                        value = text,
-                        onValueChange = { newText ->
-                            text = newText
-                        },
-                        shape = RoundedCornerShape(20.dp),
-                        label = { Text("Message") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, Color.Gray, RoundedCornerShape(20.dp)
-                            )
-                    )
-                }
-
-                Button(
-                    modifier = Modifier
-                        .height(50.dp)
-                        .width(180.dp),
-                    onClick = {
-                        if (captureImageUri?.path!!.isEmpty()) {
-                            Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
-                        } else {
-                            FirebaseHelper.uploadImageToFirebaseStorage(
-                                "Kurir ${userData.userId}",
-                                captureImageUri!!,
-                                onSuccess = {
-                                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                                },
-                                onError = {
-                                    Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
-                                }
-                            )
-                            pesananViewModel.setPesananStatus(
-                                idPesanan = "3Fg8AaY6VjurgMYE5ukG",
-                                StatusPesanan.SAMPAI,
-                                text
-                            )
-
-                            onNavigateToPesananMasukScreen()
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Green,
-                        contentColor = Color.Black,
-                    ),
-                ) {
-                    Text(text = "Konfirmasi",
-                        style = TextStyle(
-                            fontSize = (20.sp),
-                            fontWeight = FontWeight.Bold
+                        .border(1.dp, Color.Gray, RoundedCornerShape(20.dp)
                         )
-                    )
+                )
+            }
 
-                }
+            Button(
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(180.dp),
+                onClick = {
+                    if (captureImageUri.path!!.isEmpty())
+                        showToast(context, "Select an Image")
+                    else {
+                        FirebaseHelper.uploadImageToFirebaseStorage(
+                            "Kurir ${userData.userId}",
+                            captureImageUri,
+                            onSuccess = { showToast(context, it) },
+                            onError = { showToast(context, "$it") }
+                        )
+                        pesananViewModel.setPesananStatus(
+                            idPesanan = "3Fg8AaY6VjurgMYE5ukG",
+                            StatusPesanan.SAMPAI,
+                            catatan = text
+                        )
+
+                        onNavigateToPesananMasukScreen()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black,
+                ),
+            ) {
+                Text(text = "Konfirmasi",
+                    style = TextStyle(
+                        fontSize = (20.sp),
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+
             }
         }
+
     }
 
 }

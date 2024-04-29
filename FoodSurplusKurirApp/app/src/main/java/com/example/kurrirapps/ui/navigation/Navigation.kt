@@ -160,7 +160,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
             PesananMasuk(
                 userData = googleAuthUiClient.getSignedInUser(),
                 onNavigateToScreen = { navController.navigate(it) },
-                onPesananMasukEvent = pesananScreenVM::onEvent
             )
 
         }
