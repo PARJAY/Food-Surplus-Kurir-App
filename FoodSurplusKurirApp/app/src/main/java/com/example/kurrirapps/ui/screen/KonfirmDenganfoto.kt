@@ -99,17 +99,18 @@ fun KonfirmDgnFoto(
         selectedDetailPesanan.daftarKatalis.forEach { (key, value) ->
             Log.d("Ringkasan Pesanan Screen", "Katalis key : $key || katalis value : $value")
             val katalisModel = MyApp.appModule.katalisRepository.getKatalisById(key)
-            selectedPesananList.add(
-                SelectedPesanan(
-                    idKatalis = katalisModel.id,
-                    quantity = value,
-                    stokKatalis = katalisModel.stok,
-                    namaKatalis = katalisModel.namaKatalis,
-                    hargaKatalis = katalisModel.hargaJual,
-                    lokasiTujuan = katalisModel.lokasiTujuan
-                )
-            )
-            Log.d("Ringkasan Pesanan Screen", "added katalisModel : $katalisModel")
+//            selectedPesananList.add(
+//                SelectedPesanan(
+//                    idKatalis = katalisModel.id,
+//                    quantity = value,
+//                    stokKatalis = katalisModel.stok,
+//                    namaKatalis = katalisModel.namaKatalis,
+//                    hargaKatalis = katalisModel.hargaJual,
+//                    lokasiTujuan = katalisModel.lokasiTujuan,
+//                    jarak_user_dan_hotel = selectedDetailPesanan.jarak_user_dan_hotel
+//                )
+//            )
+//            Log.d("Ringkasan Pesanan Screen", "added katalisModel : $katalisModel")
         }
 
         Log.d("Ringkasan Pesanan Screen", "selectedKatalisList final: $selectedPesananList")

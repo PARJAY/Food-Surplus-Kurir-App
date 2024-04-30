@@ -14,7 +14,8 @@ data class PesananModel(
     var geolokasi_tujuan : String = "",
     var ongkir : Float = 0f,
     var catatan : String= "",
-    var alamatTujuan : String= ""
+    var alamatTujuan : String= "",
+    var jarak_user_dan_hotel: Int = 0,
 )
 
 data class SetPesananStatusModel(

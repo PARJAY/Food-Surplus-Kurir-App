@@ -27,7 +27,7 @@ class AppModuleImpl : AppModule {
     override val hotelRepository: HotelRepositoryImpl by lazy {
         HotelRepositoryImpl(db)
     }
-     val katalisRepository: KatalisRepositoryImpl by lazy {
-        KatalisRepositoryImpl(db)
+     override val katalisRepository: KatalisRepositoryImpl by lazy {
+         KatalisRepositoryImpl(db)
     }
 }

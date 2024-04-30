@@ -19,4 +19,5 @@ data class SelectedPesanan(
     var hargaKatalis : Float = 0F,
     var stokKatalis : Int,
     var lokasiTujuan : String,
+    var jarak_user_dan_hotel : Int
 )

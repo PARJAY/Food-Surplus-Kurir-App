@@ -42,7 +42,6 @@ class KatalisRepositoryImpl(private val db : FirebaseFirestore) : KatalisReposit
         }
     }
 
-
     suspend fun getKatalisById(katalisId: String): KatalisModel {
         val documentSnapshot = db.collection(KATALIS_COLLECTION).document(katalisId).get().await()
         Log.d("Get Katalis By Id", "${documentSnapshot.data}")
