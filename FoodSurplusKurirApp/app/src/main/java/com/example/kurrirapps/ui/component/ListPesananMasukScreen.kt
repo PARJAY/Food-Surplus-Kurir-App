@@ -1,5 +1,7 @@
 package com.example.kurrirapps.ui.component
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +14,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -19,6 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.dummyfirebaseauth.MyApp
+import com.example.kurrirapps.data.model.HotelModel
+import com.example.kurrirapps.data.model.PesananDisplayedNameModel
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.ui.navigation.Screen
@@ -28,8 +37,30 @@ import com.google.firebase.Timestamp
 @Composable
 fun ListPesananMasukScreen(
     onNavigateToScreen:(String)->Unit,
-    pesananModel: PesananModel
+    pesananModel: PesananModel,
+    idHotel : String
 ) {
+    val jarakDlmKm = pesananModel.jarak_user_dan_hotel/1000
+
+    val displayedCustomerName = remember { mutableStateOf("") }
+    val displayedHotelName = remember { mutableStateOf("") }
+    val displayedNameList = remember { mutableStateOf(PesananDisplayedNameModel()) }
+
+    LaunchedEffect (Unit) {
+
+        Log.d("Cek Nama Hotel","hotelModel.idHotel : $idHotel")
+        Log.d("Cek Nama Customer","pesananModel.id_user ${pesananModel.id_user}")
+
+        displayedNameList.value.namaCustomer = MyApp.appModule.customerRepositoryImpl.getCustomerById(pesananModel.id_user).name
+        displayedNameList.value.namaHotel = MyApp.appModule.hotelRepository.getHotelById(idHotel).name
+
+        displayedCustomerName.value = MyApp.appModule.customerRepositoryImpl.getCustomerById(pesananModel.id_user).name
+        displayedHotelName.value = MyApp.appModule.hotelRepository.getHotelById(idHotel).name
+
+        Log.d("Cek Isi Hotel","DisplayedNamedList Hotel ${displayedNameList.value.namaHotel}")
+        Log.d("Cek Isi Customer","DisplayedNamedList Customer ${displayedNameList.value.namaCustomer}")
+    }
+
     Column(
         modifier = Modifier
             .border(
@@ -39,7 +70,7 @@ fun ListPesananMasukScreen(
             .padding(8.dp),
     ) {
         Text(
-            text = pesananModel.id_user,
+            text = displayedCustomerName.value,
             style = TextStyle(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -48,10 +79,12 @@ fun ListPesananMasukScreen(
 
         // TODO : REVISI kontent BELAKANGAN
 
-        Text(text = pesananModel.id)
-        Text(text = pesananModel.id_hotel)
-        Text(text = "08123456788")
-        Text(text = "2km")
+        Text(text = displayedHotelName.value)
+
+        Log.d("Mana yang lebih cepat","nampilin, atau load data?")
+
+        Text(text = "" + jarakDlmKm + "km" )
+        Text(text = "Rp." + pesananModel.ongkir)
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -87,6 +120,7 @@ fun KonfirmasiPreview(){
                 status_pesanan = StatusPesanan.TERKONFIRMASI_ADMIN,
                 waktu_pesanan_dibuat = Timestamp.now()
             ),
+            idHotel = ""
         )
     }
 }

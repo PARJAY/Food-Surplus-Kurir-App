@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.kurrirapps.data.common.INTERNET_ISSUE
 import com.example.kurrirapps.data.common.PESANAN_COLLECTION
 import com.example.kurrirapps.data.model.PesananModel
-import com.example.kurrirapps.data.model.SetPesananStatusModel
 import com.example.kurrirapps.tools.FirebaseHelper.Companion.fetchSnapshotToPesanan
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,8 +43,14 @@ class PesananRepository(private val db : FirebaseFirestore) {
         listenerRegistration = null
     }
 
-    suspend fun editcatatan(pesananId: String, catatan: SetPesananStatusModel) {
-        db.collection(PESANAN_COLLECTION).document(pesananId).set(catatan).await()
+    suspend fun editCatatan(pesananId: String, fieldToUpdate: String, catatan: String ) {
+        db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, catatan)
+    }
+    suspend fun editStatusPesanan(pesananId: String,fieldToUpdate: String, statusBaru: String) {
+        db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, statusBaru)
+    }
+    suspend fun FotoBuktiKurir(pesananId: String, buktiFoto: String, fieldToUpdate: String) {
+        db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, buktiFoto)
     }
 
     suspend fun getAllHotelPesananByHotelId(pesananId: String, catatan: PesananModel) {

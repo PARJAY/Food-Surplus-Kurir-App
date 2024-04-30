@@ -1,8 +1,12 @@
 package com.example.kurrirapps.data.model
 
 data class HotelModel (
-    val id : String = "",
-    val name : String = "",
-    val address : String = "",
-    val telp : String = ""
+    var idHotel : String = "",
+    var name : String = "",
+    var phoneNumber : String = "",
+    var email : String = "",
+    var alamat : String = "",
+    var geolocation : String = "",
+    var listIdKatalis : List<String> = listOf(),
+    var statusHotel : String = ""
 )

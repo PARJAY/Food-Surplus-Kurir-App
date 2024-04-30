@@ -14,10 +14,11 @@ data class PesananListScreenUiState(
 
 data class SelectedPesanan(
     val idKatalis: String,
-    var quantity: Int ,
+    var quantity: Int,
     var namaKatalis : String = "",
     var hargaKatalis : Float = 0F,
     var stokKatalis : Int,
-    var lokasiTujuan : String,
-    var jarak_user_dan_hotel : Int
+    var alamatTujuan : String,
+    var jarak_user_dan_hotel : Int,
+    var onkir : Float
 )

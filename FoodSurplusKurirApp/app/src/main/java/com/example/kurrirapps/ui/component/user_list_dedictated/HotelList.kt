@@ -23,15 +23,15 @@ fun HotelItem(
     }
 
     Column (modifier = Modifier.padding(top = 8.dp)) {
-        Text(text = Hotel.id)
+        Text(text = Hotel.idHotel)
         Text(text = Hotel.name)
-        Text(text = Hotel.telp.toString())
+        Text(text = Hotel.phoneNumber)
 
         Button(onClick = { onUpdateAction(hotelModel) }) {
             Text(text = "Edit")
         }
 
-        Button(onClick = { onDeleteAction(hotelModel.id) }) {
+        Button(onClick = { onDeleteAction(hotelModel.idHotel) }) {
             Text(text = "Delete")
         }
     }

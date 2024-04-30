@@ -91,7 +91,7 @@ class HotelListScreenViewModel(private val hotelRepositoryImpl: HotelRepositoryI
             setState(_state.value.copy(isLoading = true))
 
             try {
-                hotelRepositoryImpl.updateHotel(updatedHotel.id, updatedHotel)
+                hotelRepositoryImpl.updateHotel(updatedHotel.idHotel, updatedHotel)
                 setState(_state.value.copy(isLoading = false))
                 setEffect { HotelListScreenEffects.ShowSnackBarMessage(message = "Hotel updated successfully") }
             } catch (e: Exception) {

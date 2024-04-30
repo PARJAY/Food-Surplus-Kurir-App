@@ -25,8 +25,14 @@ fun RingkasanPesanan(
 ) {
 
     var totalHarga = 0F
+    var totalHargaPlusOngkir = 0F
+    var ongkir : Float = 0F
+    var alamatTujuan : String = ""
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
+    selectedKatalis.forEach { totalHargaPlusOngkir = totalHarga + it.onkir }
+    selectedKatalis.forEach { ongkir = it.onkir }
+    selectedKatalis.forEach { alamatTujuan = it.alamatTujuan }
     var ongkirPrice : Float?
     var bensinPrice : Float?
 
@@ -48,6 +54,7 @@ fun RingkasanPesanan(
                     Text(text = it.namaKatalis + " x " +  it.quantity )
                     Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
                 }
+
             }
         }
 
@@ -71,7 +78,7 @@ fun RingkasanPesanan(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = "Total Harga")
-                    Text(text = "Rp. ${totalHarga + ongkirPrice!! + bensinPrice!!}")
+                    Text(text = "Rp. $totalHargaPlusOngkir")
                 }
             }
             else {
@@ -81,12 +88,22 @@ fun RingkasanPesanan(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Total Harga")
-                    Text(text = "Rp. $totalHarga")
+                    Text(text = "Ongkir :")
+                    Text(text = "Rp." + ongkir)
                 }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "Total Harga")
+                    Text(text = "Rp. $totalHargaPlusOngkir")
+                }
+
             }
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
     Column(
         modifier = Modifier
             .border(
@@ -96,9 +113,7 @@ fun RingkasanPesanan(
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        selectedKatalis.forEach {
-        Text(text ="jarak :" + it.jarak_user_dan_hotel)
-        }
+        Text(text ="Alamat Tujuan : " + alamatTujuan)
     }
 
 }
