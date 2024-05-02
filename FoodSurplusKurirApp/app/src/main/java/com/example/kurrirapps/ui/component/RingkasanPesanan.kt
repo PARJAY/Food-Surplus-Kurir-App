@@ -26,19 +26,17 @@ fun RingkasanPesanan(
 
     var totalHarga = 0F
     var totalHargaPlusOngkir = 0F
-    var ongkir : Float = 0F
-    var alamatTujuan : String = ""
+    var ongkir = 0F
+    var ongkirPrice : Float?
+    var alamatTujuan = ""
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
     selectedKatalis.forEach { totalHargaPlusOngkir = totalHarga + it.onkir }
     selectedKatalis.forEach { ongkir = it.onkir }
     selectedKatalis.forEach { alamatTujuan = it.alamatTujuan }
 
-    var ongkirPrice : Float?
-    var bensinPrice : Float?
 
-
-    Column(
+    Column (
         modifier = Modifier
             .border(
                 BorderStroke(1.dp, Color.Black),
@@ -46,65 +44,26 @@ fun RingkasanPesanan(
             )
             .padding(8.dp)
     ) {
-        Column {
-            selectedKatalis.forEach {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = it.namaKatalis + " x " +  it.quantity )
-                    Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
-                }
-
-            }
+        selectedKatalis.forEach {
+            LeftRightText(it.namaKatalis + " x " +  it.quantity, it.hargaKatalis * it.quantity)
         }
 
-        Column {
-            if (hotelToUserDistance != 0f) {
-                ongkirPrice = hotelToUserDistance.div(10)
-                bensinPrice = hotelToUserDistance.times(1.5f)
+        if (hotelToUserDistance != 0f) {
+            ongkirPrice = hotelToUserDistance.div(10)
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Biaya transportasi")
-                    Text(text = "Rp. ${ongkirPrice!! + bensinPrice!!}")
-                }
+            LeftRightText("Biaya transportasi", totalHarga + ongkirPrice!!)
+            Spacer(modifier = Modifier.height(16.dp))
+            LeftRightText("Total Harga", totalHarga + ongkirPrice!!)
+        }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Total Harga")
-                    Text(text = "Rp. $totalHargaPlusOngkir")
-                }
-            }
-            else {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Ongkir :")
-                    Text(text = "Rp." + ongkir)
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Total Harga")
-                    Text(text = "Rp. $totalHargaPlusOngkir")
-                }
-
-            }
+        else {
+            Spacer(modifier = Modifier.height(16.dp))
+            LeftRightText("Total Harga", totalHarga)
         }
     }
+
     Spacer(modifier = Modifier.height(10.dp))
+
     Column(
         modifier = Modifier
             .border(
@@ -114,7 +73,20 @@ fun RingkasanPesanan(
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Text(text ="Alamat Tujuan : " + alamatTujuan)
+        Text(text = "Alamat Tujuan : $alamatTujuan")
     }
 
+}
+
+
+// TODO : Untested
+@Composable
+fun LeftRightText(leftTextInfo : String, rightTextPrice : Float) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = leftTextInfo)
+        Text(text = "Rp. $rightTextPrice")
+    }
 }

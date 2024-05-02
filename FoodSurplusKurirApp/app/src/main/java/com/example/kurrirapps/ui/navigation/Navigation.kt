@@ -175,9 +175,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
         }
 
         composable(Screen.ScreenRingkasanPesanan.route) {
-            ScreenRingkasanPesanan(
-                selectedDetailPesanan = selectedDetailPesanan
-            )
+//            ScreenRingkasanPesanan(
+//                selectedDetailPesanan = selectedDetailPesanan
+//            )
         }
 
         composable(Screen.KonfirmDgnFoto.route) {

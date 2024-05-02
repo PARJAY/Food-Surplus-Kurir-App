@@ -94,7 +94,7 @@ fun KonfirmDgnFoto(
 
     LaunchedEffect(Unit) {
         Log.d("Ringkasan Pesanan Screen", "Launched?")
-        Log.d("Ringkasan Pesanan Screen", "Launched?")
+        
         selectedDetailPesanan.daftarKatalis.forEach { (key, value) ->
             Log.d("Ringkasan Pesanan Screen", "Katalis key : $key || katalis value : $value")
             val katalisModel = MyApp.appModule.katalisRepository.getKatalisById(key)
@@ -105,9 +105,9 @@ fun KonfirmDgnFoto(
                     stokKatalis = katalisModel.stok,
                     namaKatalis = katalisModel.namaKatalis,
                     hargaKatalis = katalisModel.hargaJual,
-                    alamatTujuan = selectedDetailPesanan.alamatTujuan,
                     jarak_user_dan_hotel = selectedDetailPesanan.jarak_user_dan_hotel,
-                    onkir = selectedDetailPesanan.ongkir
+                    onkir = selectedDetailPesanan.ongkir,
+                    alamatTujuan = selectedDetailPesanan.alamatTujuan
                 )
             )
             Log.d("Ringkasan Pesanan Screen", "added katalisModel : $katalisModel")
@@ -149,7 +149,8 @@ fun KonfirmDgnFoto(
                     Spacer(modifier = Modifier.height(30.dp))
                     RingkasanPesanan(
                         selectedKatalis = selectedPesananList,
-                        hotelToUserDistanceInMeter)
+                        hotelToUserDistanceInMeter
+                    )
 
                     Spacer(modifier = Modifier.height(10.dp))
 
