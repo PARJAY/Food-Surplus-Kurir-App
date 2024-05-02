@@ -97,7 +97,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                 if (state.isSignInSuccessful) {
                     Toast.makeText(context, "Sign in Success", Toast.LENGTH_LONG).show()
 
-                    navController.navigate(Screen.ViewHotelModel.route)
+                    navController.navigate(Screen.PesananMasuk.route)
                     viewModel.resetState()
                 }
             }
