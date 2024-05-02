@@ -74,7 +74,7 @@ fun KonfirmDgnFoto(
     )
 
     var captureImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
-    var text by remember { mutableStateOf("") }
+    var catatan by remember { mutableStateOf("") }
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -92,10 +92,9 @@ fun KonfirmDgnFoto(
 
     val selectedPesananList = remember { mutableStateListOf<SelectedPesanan>() }
 
-
     LaunchedEffect(Unit) {
         Log.d("Ringkasan Pesanan Screen", "Launched?")
-        Log.d("Ringkasan Pesanan Screen", "Launched?")
+        
         selectedDetailPesanan.daftarKatalis.forEach { (key, value) ->
             Log.d("Ringkasan Pesanan Screen", "Katalis key : $key || katalis value : $value")
             val katalisModel = MyApp.appModule.katalisRepository.getKatalisById(key)
@@ -106,8 +105,9 @@ fun KonfirmDgnFoto(
                     stokKatalis = katalisModel.stok,
                     namaKatalis = katalisModel.namaKatalis,
                     hargaKatalis = katalisModel.hargaJual,
-                    lokasiTujuan = katalisModel.lokasiTujuan,
-                    jarak_user_dan_hotel = selectedDetailPesanan.jarak_user_dan_hotel
+                    jarak_user_dan_hotel = selectedDetailPesanan.jarak_user_dan_hotel,
+                    onkir = selectedDetailPesanan.ongkir,
+                    alamatTujuan = selectedDetailPesanan.alamatTujuan
                 )
             )
             Log.d("Ringkasan Pesanan Screen", "added katalisModel : $katalisModel")
@@ -214,9 +214,9 @@ fun KonfirmDgnFoto(
                         )
 
                         OutlinedTextField(
-                            value = text,
+                            value = catatan,
                             onValueChange = { newText ->
-                                text = newText
+                                catatan = newText
                             },
 //                                shape = RoundedCornerShape(20.dp),
                             label = { Text("Message") },
@@ -241,12 +241,20 @@ fun KonfirmDgnFoto(
                                     onSuccess = { showToast(context, it) },
                                     onError = { showToast(context, "$it") }
                                 )
-                                pesananViewModel.setPesananStatus(
+                                pesananViewModel.beriCatatanPadaPesanan(
                                     idPesanan = selectedDetailPesanan.id,
-                                    StatusPesanan.SAMPAI,
-                                    catatan = text
+                                    catatan = catatan
                                 )
 
+                                pesananViewModel.ubahStatusPesanan(
+                                    idPesanan = selectedDetailPesanan.id,
+                                )
+                                pesananViewModel.tambahkanFotoBuktiKurir(
+                                    idPesanan = selectedDetailPesanan.id,
+                                    buktiFoto = captureImageUri.lastPathSegment.toString()
+                                )
+
+                                Log.d("cek catatan", catatan)
                                 onNavigateToPesananMasukScreen()
                             }
                         },

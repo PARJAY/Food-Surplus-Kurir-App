@@ -33,9 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.dummyfirebaseauth.MyApp
+import com.example.kurrirapps.data.model.CustomerModel
+import com.example.kurrirapps.data.model.HotelModel
+import com.example.kurrirapps.data.model.PesananDisplayedNameModel
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.presentation.auth.UserData
+import com.example.kurrirapps.presentation.pesanan.SelectedPesanan
 import com.example.kurrirapps.ui.component.ListPesananMasukScreen
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
@@ -132,7 +136,8 @@ fun PesananMasuk(
                             Log.d("PesananMasukScreen", "$pesanan")
                             onNavigateToScreen(it)
                         },
-                        pesananModel = pesanan
+                        pesananModel = pesanan,
+                        idHotel = pesanan.id_hotel
                     )
                     Spacer(modifier = Modifier.height(0.dp))
                 }

@@ -31,7 +31,7 @@ class HotelRepository(val db : FirebaseFirestore) {
                 when (change.type) {
                     DocumentChange.Type.ADDED -> addDataCallback(hotelModel)
                     DocumentChange.Type.MODIFIED -> updateDataCallback(hotelModel)
-                    DocumentChange.Type.REMOVED -> deleteDataCallback(hotelModel.id)
+                    DocumentChange.Type.REMOVED -> deleteDataCallback(hotelModel.idHotel)
                 }
                 Log.d("LDES Repo: ", "Data In -> ${change.type} - ${change.document}")
             }

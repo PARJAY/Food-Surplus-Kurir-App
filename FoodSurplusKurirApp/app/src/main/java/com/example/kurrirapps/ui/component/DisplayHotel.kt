@@ -25,10 +25,10 @@ fun DisplayHotel(
 ){
     Row (
         modifier = Modifier.clickable {
-            Log.d("DisplayHotelComponent", hotelModel.id)
+            Log.d("DisplayHotelComponent", hotelModel.idHotel)
             kuriirViewModel.updateDataKurir(
                 selectedKuriirlId = userData.userId,
-                idHotel = hotelModel.id,
+                idHotel = hotelModel.idHotel,
             )
             onNavigateToScreen(Screen.PesananMasuk.route)
         },

@@ -3,6 +3,8 @@ package com.example.kurrirapps.tools
 import android.net.Uri
 import android.util.Log
 import com.example.dummyfirebaseauth.MyApp
+import com.example.kurrirapps.data.model.CustomerModel
+import com.example.kurrirapps.data.model.HotelModel
 import com.example.kurrirapps.data.model.KatalisModel
 import com.example.kurrirapps.data.model.KurirModel
 import com.example.kurrirapps.data.model.PesananModel
@@ -10,10 +12,31 @@ import com.example.kurrirapps.logic.StatusKurir
 import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.model.DaftarKatalis
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class FirebaseHelper {
 
     companion object {
+
+        fun fetchSnapshotToCustomerModel(queryDocumentSnapshot : DocumentSnapshot) : CustomerModel {
+            return CustomerModel(
+                name = queryDocumentSnapshot.getString("name") ?: "",
+                address = queryDocumentSnapshot.getString("address") ?: "",
+                phone_number = queryDocumentSnapshot.getString("phone_number") ?: ""
+            )
+        }
+
+        fun fetchSnapshotToHotelModel(queryDocumentSnapshot: DocumentSnapshot) =
+            HotelModel(
+                idHotel = queryDocumentSnapshot.id,
+                name =  queryDocumentSnapshot.getString("name") ?: "",
+                phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
+                email = queryDocumentSnapshot.getString("email")?: "",
+                alamat = queryDocumentSnapshot.getString("alamat")?: "" ,
+                listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
+                statusHotel = queryDocumentSnapshot.getString("statusHotel")?: "",
+            )
+
 
         fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: DocumentSnapshot): KatalisModel {
             val komposisi = queryDocumentSnapshot.getString("idHotel") ?: ""
@@ -108,7 +131,8 @@ class FirebaseHelper {
                 ongkir = queryDocumentSnapshot.getLong("ongkir")?.toFloat() ?: 0.0f,
                 daftarKatalis = daftarKatalis.daftarKatalis,
                 waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat"),
-                alamatTujuan = queryDocumentSnapshot.getString("alamatTujuan") ?: ""
+                alamatTujuan = queryDocumentSnapshot.getString("alamatTujuan") ?: "",
+                jarak_user_dan_hotel = queryDocumentSnapshot.getLong("jarak_user_dan_hotel")?.toInt() ?: 0,
             )
         }
     }

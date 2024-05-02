@@ -25,10 +25,16 @@ fun RingkasanPesanan(
 ) {
 
     var totalHarga = 0F
+    var totalHargaPlusOngkir = 0F
+    var ongkir = 0F
+    var ongkirPrice : Float?
+    var alamatTujuan = ""
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
-    var ongkirPrice : Float?
-    var bensinPrice : Float?
+    selectedKatalis.forEach { totalHargaPlusOngkir = totalHarga + it.onkir }
+    selectedKatalis.forEach { ongkir = it.onkir }
+    selectedKatalis.forEach { alamatTujuan = it.alamatTujuan }
+
 
 
     Column (
@@ -45,21 +51,19 @@ fun RingkasanPesanan(
 
         if (hotelToUserDistance != 0f) {
             ongkirPrice = hotelToUserDistance.div(10)
-            bensinPrice = hotelToUserDistance.times(1.5f)
 
-            LeftRightText("Biaya transportasi", totalHarga + ongkirPrice!! + bensinPrice!!)
-
+            LeftRightText("Biaya transportasi", totalHarga + ongkirPrice!!)
             Spacer(modifier = Modifier.height(16.dp))
-
-            LeftRightText("Total Harga", totalHarga + ongkirPrice!! + bensinPrice!!)
+            LeftRightText("Total Harga", totalHarga + ongkirPrice!!)
         }
 
         else {
             Spacer(modifier = Modifier.height(16.dp))
-
             LeftRightText("Total Harga", totalHarga)
         }
     }
+
+    Spacer(modifier = Modifier.height(10.dp))
 
     Column(
         modifier = Modifier
@@ -70,9 +74,7 @@ fun RingkasanPesanan(
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        selectedKatalis.forEach {
-            Text(text ="jarak :" + it.jarak_user_dan_hotel)
-        }
+        Text(text = "Alamat Tujuan : $alamatTujuan")
     }
 
 }

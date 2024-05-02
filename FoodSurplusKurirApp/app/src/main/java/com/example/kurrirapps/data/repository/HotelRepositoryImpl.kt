@@ -1,14 +1,18 @@
 package com.example.kurrirapps.data.repository
 
 import android.util.Log
+import com.example.kurrirapps.data.common.CUSTOMER_COLLECTION
 import com.example.kurrirapps.data.common.HOTEL_COLLECTION
 import com.example.kurrirapps.data.common.INTERNET_ISSUE
+import com.example.kurrirapps.data.model.CustomerModel
 import com.example.kurrirapps.data.model.HotelModel
+import com.example.kurrirapps.tools.FirebaseHelper
 import com.example.kurrirapps.tools.FirebaseResult
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import fetchSnapshotToHotel
+//import fetchSnapshotToHotel
 import kotlinx.coroutines.tasks.await
 
 class HotelRepositoryImpl(private val db : FirebaseFirestore) {
@@ -33,7 +37,7 @@ class HotelRepositoryImpl(private val db : FirebaseFirestore) {
                     when (change.type) {
                         DocumentChange.Type.ADDED -> addDataCallback(hotelModel)
                         DocumentChange.Type.MODIFIED -> updateDataCallback(hotelModel)
-                        DocumentChange.Type.REMOVED -> deleteDataCallback(hotelModel.id)
+                        DocumentChange.Type.REMOVED -> deleteDataCallback(hotelModel.idHotel)
                     }
                     Log.d("LDES Repo: ", "Data In -> ${change.type} - ${change.document}")
                 }
@@ -68,4 +72,14 @@ class HotelRepositoryImpl(private val db : FirebaseFirestore) {
     suspend fun deleteHotel(hotel: String) {
         db.collection(HOTEL_COLLECTION).document(hotel).delete().await()
     }
+
+
+    suspend fun getHotelById(hotelId: String): HotelModel {
+        val documentSnapshot = db.collection(HOTEL_COLLECTION).document(hotelId).get().await()
+        Log.d("Get Hotel By Id", "${documentSnapshot.data}")
+
+        return FirebaseHelper.fetchSnapshotToHotelModel(documentSnapshot)
+    }
+
+
 }

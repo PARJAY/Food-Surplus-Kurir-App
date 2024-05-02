@@ -54,12 +54,12 @@ fun ScreenViewHotelModel(
             },
             updateDataCallback = { updatedData ->
 
-                val index = hotelModels.indexOfFirst { it.id == updatedData.id }
+                val index = hotelModels.indexOfFirst { it.idHotel == updatedData.idHotel }
                 if (index != -1) hotelModels[index] = updatedData
                 Log.d("ScreenViewHotelModel", "updated to screen : $updatedData")
             },
             deleteDataCallback = { documentId: String ->
-                hotelModels.removeAll { it.id == documentId }
+                hotelModels.removeAll { it.idHotel == documentId }
                 Log.d("ScreenViewHotelModel", "deleted from screen : id = $documentId")
             }
         )
@@ -90,9 +90,9 @@ fun ScreenViewHotelModel(
 
 fun fetchSnapshotToHotel(queryDocumentSnapshot : QueryDocumentSnapshot) : HotelModel {
     return HotelModel(
-        id = queryDocumentSnapshot.id,
+        idHotel = queryDocumentSnapshot.id,
         name = queryDocumentSnapshot.getString("name") ?: "",
-        telp = queryDocumentSnapshot.getString("phoneNumber") ?: "",
-        address = queryDocumentSnapshot.getString("alamat") ?: ""
+        phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
+        alamat = queryDocumentSnapshot.getString("alamat") ?: ""
     )
 }

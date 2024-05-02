@@ -1,5 +1,6 @@
 package com.example.kurrirapps.di
 
+import com.example.kurrirapps.data.repository.CustomerRepositoryImpl
 import com.example.kurrirapps.data.repository.HotelRepositoryImpl
 import com.example.kurrirapps.data.repository.KatalisRepositoryImpl
 import com.example.kurrirapps.data.repository.KurirRepositoryImpl
@@ -13,5 +14,6 @@ interface AppModule {
     val pesananRepository : PesananRepository
     val hotelRepository : HotelRepositoryImpl
     val kurirRepositoryImpl : KurirRepositoryImpl
+    val customerRepositoryImpl : CustomerRepositoryImpl
     val storage : FirebaseStorage
 }

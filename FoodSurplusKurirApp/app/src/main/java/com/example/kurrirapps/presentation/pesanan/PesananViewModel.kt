@@ -3,8 +3,6 @@ package com.example.kurrirapps.presentation.pesanan
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kurrirapps.data.model.SetPesananStatusModel
-import com.example.kurrirapps.logic.StatusPesanan
 import kotlinx.coroutines.launch
 
 class PesananViewModel (
@@ -15,7 +13,7 @@ class PesananViewModel (
         when (event) {
             is PesananEvent.UpdatePesanan -> {
                 viewModelScope.launch {
-                    setPesananStatus(event.idPesanan, event.statusPesanan, event.catatan)
+                    beriCatatanPadaPesanan(event.idPesanan, event.catatan)
                 }
             }
             is PesananEvent.ReadPesanan -> {
@@ -23,15 +21,36 @@ class PesananViewModel (
         }
     }
 
-    fun setPesananStatus(idPesanan: String, statusPesanan: StatusPesanan, catatan:String) {
+    fun beriCatatanPadaPesanan(idPesanan: String, catatan:String) {
         viewModelScope.launch {
             try {
-                pesananRepository.editcatatan(
+                pesananRepository.editCatatan(
                     pesananId = idPesanan,
-                    SetPesananStatusModel(
-                        status_pesanan = statusPesanan,
-                        catatan = catatan
-                    )
+                    catatan = catatan,
+                    fieldToUpdate = "catatan"
+                )
+            } catch (e: Exception) {
+                Log.d("Viewmodel", "editcatatan exception : $e")
+            }
+        }
+    }
+    fun ubahStatusPesanan(idPesanan: String) {
+        viewModelScope.launch {
+            try {
+                pesananRepository.editStatusPesanan(pesananId = idPesanan, statusBaru = "SUDAH_SAMPAI", fieldToUpdate = "status_pesanan",)
+            } catch (e: Exception) {
+                Log.d("Viewmodel", "editcatatan exception : $e")
+            }
+        }
+    }
+    fun tambahkanFotoBuktiKurir(idPesanan: String, buktiFoto :String) {
+        viewModelScope.launch {
+            try {
+                pesananRepository.FotoBuktiKurir(
+                    pesananId = idPesanan,
+                    buktiFoto = buktiFoto,
+                    fieldToUpdate = "transferProofImageLink",
+
                 )
             } catch (e: Exception) {
                 Log.d("Viewmodel", "editcatatan exception : $e")
