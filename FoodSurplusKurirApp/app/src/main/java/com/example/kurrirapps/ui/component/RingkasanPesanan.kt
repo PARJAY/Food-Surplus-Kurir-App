@@ -33,6 +33,7 @@ fun RingkasanPesanan(
     selectedKatalis.forEach { totalHargaPlusOngkir = totalHarga + it.onkir }
     selectedKatalis.forEach { ongkir = it.onkir }
     selectedKatalis.forEach { alamatTujuan = it.alamatTujuan }
+
     var ongkirPrice : Float?
     var bensinPrice : Float?
 

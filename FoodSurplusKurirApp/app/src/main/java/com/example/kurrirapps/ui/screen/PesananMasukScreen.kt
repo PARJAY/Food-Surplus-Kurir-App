@@ -120,7 +120,7 @@ fun PesananMasuk(
                     text = "Pesanan Masuk",
                     style = androidx.compose.ui.text.TextStyle(
                         fontSize = (30.sp),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 )
                 Spacer(modifier = Modifier.height(30.dp))
