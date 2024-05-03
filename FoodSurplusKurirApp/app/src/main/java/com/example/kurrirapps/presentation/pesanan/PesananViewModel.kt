@@ -37,7 +37,7 @@ class PesananViewModel (
     fun ubahStatusPesanan(idPesanan: String) {
         viewModelScope.launch {
             try {
-                pesananRepository.editStatusPesanan(pesananId = idPesanan, statusBaru = "SUDAH_SAMPAI", fieldToUpdate = "status_pesanan",)
+                pesananRepository.editStatusPesanan(pesananId = idPesanan, statusBaru = "SAMPAI", fieldToUpdate = "status_pesanan",)
             } catch (e: Exception) {
                 Log.d("Viewmodel", "editcatatan exception : $e")
             }

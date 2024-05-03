@@ -191,7 +191,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                 userData = googleAuthUiClient.getSignedInUser()!!,
                 onNavigateToPesananMasukScreen = {
                     navController.popBackStack()
-                    navController.popBackStack()
                 },
                 pesananViewModel = PesananViewModel(
                     PesananRepository(db = FirebaseFirestore.getInstance())
