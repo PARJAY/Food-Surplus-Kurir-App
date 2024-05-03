@@ -265,6 +265,10 @@ fun KonfirmDgnFoto(
                                 idPesanan = selectedDetailPesanan.id,
                                 buktiFoto = captureImageUri.lastPathSegment.toString()
                             )
+                            pesananViewModel.editIdKurir(
+                                idPesanan = selectedDetailPesanan.id,
+                                idKurir =  userData.userId
+                            )
 
                             Log.d("cek catatan", catatan)
                             onNavigateToPesananMasukScreen()

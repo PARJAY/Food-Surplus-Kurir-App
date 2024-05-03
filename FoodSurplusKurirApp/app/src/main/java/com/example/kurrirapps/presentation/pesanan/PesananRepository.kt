@@ -52,6 +52,9 @@ class PesananRepository(private val db : FirebaseFirestore) {
     suspend fun FotoBuktiKurir(pesananId: String, buktiFoto: String, fieldToUpdate: String) {
         db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, buktiFoto)
     }
+    suspend fun editIdKurir(pesananId: String, idKurir: String, fieldToUpdate: String) {
+        db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, idKurir)
+    }
 
     suspend fun getAllHotelPesananByHotelId(pesananId: String, catatan: PesananModel) {
         db.collection(PESANAN_COLLECTION).document(pesananId).set(catatan).await()
