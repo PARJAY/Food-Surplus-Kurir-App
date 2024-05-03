@@ -17,10 +17,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,10 +34,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,8 +57,13 @@ import com.example.kurrirapps.presentation.pesanan.SelectedPesanan
 import com.example.kurrirapps.tools.FirebaseHelper
 import com.example.kurrirapps.tools.Utils.Companion.showToast
 import com.example.kurrirapps.ui.component.RingkasanPesanan
+import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.HijauMuda
+import com.example.kurrirapps.ui.theme.HijauTua
+import com.example.kurrirapps.ui.theme.Krem
 import com.example.kurrirapps.ui.theme.KurrirAppsTheme
+import com.example.kurrirapps.ui.theme.White
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Objects
@@ -117,163 +127,169 @@ fun KonfirmDgnFoto(
     }
 
     LazyColumn(
+        modifier = Modifier.background(Krem),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item{
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(Brown)
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Absolute.SpaceBetween
-                ) {
-                    if (userData?.username != null) {
+            Column (
+                modifier = Modifier.padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(25.dp))
+                Text(
+                    text = "Ringkasan Pesanan",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(30.dp))
+                RingkasanPesanan(
+                    selectedKatalis = selectedPesananList,
+                    hotelToUserDistanceInMeter
+                )
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                if (captureImageUri == Uri.EMPTY) {
+                    Button(
+                        onClick = {
+                            val permissionCheckResult =
+                                ContextCompat.checkSelfPermission(
+                                    context,
+                                    android.Manifest.permission.CAMERA
+                                )
+
+                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                cameraLauncher.launch(uri)
+                            } else {
+                                permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                            }
+                        },
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(200.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = HijauMuda,
+                            contentColor = White
+                        )
+                    ) {
                         Text(
-                            text = userData.username,
-                            color = Color.White
+                            text = "Foto konfirmasi Pesanan Sudah Sampai",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (20.sp),
+                                textAlign = TextAlign.Center
+                                )
                         )
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
-                Column (
-                    modifier = Modifier.padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Text(
-                        text = "Ringkasan Pesanan",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(30.dp))
-                    RingkasanPesanan(
-                        selectedKatalis = selectedPesananList,
-                        hotelToUserDistanceInMeter
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    if (captureImageUri == Uri.EMPTY) {
-                        Button(
-                            onClick = {
+                else {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    AsyncImage(
+                        model = captureImageUri,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(300.dp)
+                            .clickable {
                                 val permissionCheckResult =
                                     ContextCompat.checkSelfPermission(
                                         context,
                                         android.Manifest.permission.CAMERA
                                     )
 
-                                if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                if (permissionCheckResult == PackageManager.PERMISSION_GRANTED)
                                     cameraLauncher.launch(uri)
-                                } else {
-                                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                                }
-                            },
-                            modifier = Modifier
-                                .height(200.dp)
-                                .width(200.dp),
-                            shape = RoundedCornerShape(20.dp)
-                        ) {
-                            Text(
-                                text = "Foto konfirmasi Pesanan Sudah Sampai",
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = (20.sp),
-
-                                    )
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(20.dp))
-                    }
-                    else {
-                        Spacer(modifier = Modifier.height(20.dp))
-                        AsyncImage(
-                            model = captureImageUri,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(300.dp)
-                                .clickable {
-                                    val permissionCheckResult =
-                                        ContextCompat.checkSelfPermission(
-                                            context,
-                                            android.Manifest.permission.CAMERA
-                                        )
-
-                                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED)
-                                        cameraLauncher.launch(uri)
-                                    else permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                                }
-                        )
-
-                        Spacer(modifier = Modifier.height(15.dp))
-                        Text(
-                            text = "Sisipkan Pesan",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-
-                        OutlinedTextField(
-                            value = catatan,
-                            onValueChange = { newText ->
-                                catatan = newText
-                            },
-//                                shape = RoundedCornerShape(20.dp),
-                            label = { Text("Message") },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
-
-                    }
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Button(
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(200.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        onClick = {
-                            if (captureImageUri.path!!.isEmpty())
-                                showToast(context, "Select an Image")
-                            else {
-                                FirebaseHelper.uploadImageToFirebaseStorage(
-                                    "Kurir ${userData.userId}",
-                                    captureImageUri,
-                                    onSuccess = { showToast(context, it) },
-                                    onError = { showToast(context, "$it") }
-                                )
-                                pesananViewModel.beriCatatanPadaPesanan(
-                                    idPesanan = selectedDetailPesanan.id,
-                                    catatan = catatan
-                                )
-
-                                pesananViewModel.ubahStatusPesanan(
-                                    idPesanan = selectedDetailPesanan.id,
-                                )
-                                pesananViewModel.tambahkanFotoBuktiKurir(
-                                    idPesanan = selectedDetailPesanan.id,
-                                    buktiFoto = captureImageUri.lastPathSegment.toString()
-                                )
-
-                                Log.d("cek catatan", catatan)
-                                onNavigateToPesananMasukScreen()
+                                else permissionLauncher.launch(android.Manifest.permission.CAMERA)
                             }
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        text = "Sisipkan Pesan",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        color = Color.Black
+                    )
+
+                    OutlinedTextField(
+                        value = catatan,
+                        onValueChange = { newText ->
+                            catatan = newText
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Brown,
-                            contentColor = Color.White,
-                        ),
-                    ) {
-                        Text(text = "Konfirmasi",
-                            style = TextStyle(
-                                fontSize = (20.sp),
-                                fontWeight = FontWeight.Bold
-                            )
+//                                shape = RoundedCornerShape(20.dp),
+                        label = { Text("Catatan") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            unfocusedBorderColor = HijauTua,
+                            focusedBorderColor = HijauTua,
+                            unfocusedContainerColor = White,
+                            focusedContainerColor = White,
+                            focusedLabelColor = Color.Black
                         )
-                    }
+                    )
+
+                }
+                Spacer(modifier = Modifier.height(15.dp))
+                Button(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = {
+                        if (captureImageUri.path!!.isEmpty())
+                            showToast(context, "Select an Image")
+                        else {
+                            FirebaseHelper.uploadImageToFirebaseStorage(
+                                "Kurir ${userData.userId}",
+                                captureImageUri,
+                                onSuccess = { showToast(context, it) },
+                                onError = { showToast(context, "$it") }
+                            )
+                            pesananViewModel.beriCatatanPadaPesanan(
+                                idPesanan = selectedDetailPesanan.id,
+                                catatan = catatan
+                            )
+
+                            pesananViewModel.ubahStatusPesanan(
+                                idPesanan = selectedDetailPesanan.id,
+                            )
+                            pesananViewModel.tambahkanFotoBuktiKurir(
+                                idPesanan = selectedDetailPesanan.id,
+                                buktiFoto = captureImageUri.lastPathSegment.toString()
+                            )
+                            pesananViewModel.editIdKurir(
+                                idPesanan = selectedDetailPesanan.id,
+                                idKurir =  userData.userId
+                            )
+
+                            Log.d("cek catatan", catatan)
+                            onNavigateToPesananMasukScreen()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = HijauTua,
+                        contentColor = Color.White,
+                    ),
+                ) {
+                    Text(text = "Konfirmasi",
+                        style = TextStyle(
+                            fontSize = (20.sp),
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
             }
         }
     }
+}
 
 
 

@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kurrirapps.presentation.auth.SignInState
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.HijauMuda
+import com.example.kurrirapps.ui.theme.Krem
 import com.example.kurrirapps.ui.theme.yellow
 
 @Composable
@@ -54,48 +56,40 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brown)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center,
-        )
-    {
-        Box(
+            .background(HijauMuda),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(
             modifier = Modifier
-                .border(5.dp, color = Color.Gray,
-//                    shape = RoundedCornerShape(16.dp)
-                )
-                .background(yellow)
-                .height(580.dp)
-                .width(320.dp)
-                ){
-            Column (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ){
-                Spacer(modifier = Modifier.height(45.dp))
+                .height(525.dp)
+                .width(300.dp)
+                .background(HijauMuda),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Krem,
+                contentColor = Color.Black
+            ),
+            onClick = { /*TODO*/ }
+        ) {
+            Column (horizontalAlignment = Alignment.CenterHorizontally,){
+                Spacer(modifier = Modifier.height(0.dp))
                 Text(text = "Login",
+                    textAlign = TextAlign.Center,
                     style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (50.sp),
-                        color = (Color.Black),
+                        fontSize = 35.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 )
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(50.dp))
                 Text(
                     text = "Selamat Datang di Kurir App, Silahkan Login dengan Akun Google Anda",
-                    style = TextStyle(
-                        fontSize = (26.sp),
-                        color = (Color.Black),
-                        textAlign = TextAlign.Center
-                    )
+                    style = TextStyle(textAlign = TextAlign.Center)
                 )
                 Spacer(modifier = Modifier.height(200.dp))
                 Button(
                     modifier = Modifier
-                        .width(250.dp)
-                        .height(50.dp),
+                        .width(230.dp)
+                        .height(70.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White,
                         contentColor = Color.Black
@@ -103,12 +97,8 @@ fun LoginScreen(
                     onClick = { onSignInClick() }
                 ) {
                     Image(painter = painterResource(id = com.example.kurrirapps.R.drawable.devicon_google), contentDescription ="Google Icon" )
-                    Spacer(modifier = Modifier.width(23.dp))
-                    Text(
-                        text = "Sign in With Google",
-                        style = TextStyle(
-                            fontSize = (20.sp)
-                        ))
+                    Spacer(modifier = Modifier.width(25.dp))
+                    Text(text = "Sign in With Google")
                 }
             }
         }

@@ -7,7 +7,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -31,6 +33,8 @@ import com.example.kurrirapps.data.model.PesananDisplayedNameModel
 import com.example.kurrirapps.data.model.PesananModel
 import com.example.kurrirapps.logic.StatusPesanan
 import com.example.kurrirapps.ui.navigation.Screen
+import com.example.kurrirapps.ui.theme.HijauMuda
+import com.example.kurrirapps.ui.theme.HijauTua
 import com.example.kurrirapps.ui.theme.KurrirAppsTheme
 import com.google.firebase.Timestamp
 
@@ -44,6 +48,7 @@ fun ListPesananMasukScreen(
 
     val displayedCustomerName = remember { mutableStateOf("") }
     val displayedHotelName = remember { mutableStateOf("") }
+    val displayedHotelAdress = remember { mutableStateOf("") }
     val displayedNameList = remember { mutableStateOf(PesananDisplayedNameModel()) }
 
     LaunchedEffect (Unit) {
@@ -56,52 +61,60 @@ fun ListPesananMasukScreen(
 
         displayedCustomerName.value = MyApp.appModule.customerRepositoryImpl.getCustomerById(pesananModel.id_user).name
         displayedHotelName.value = MyApp.appModule.hotelRepository.getHotelById(idHotel).name
+        displayedHotelAdress.value = MyApp.appModule.hotelRepository.getHotelById(idHotel).alamat
 
         Log.d("Cek Isi Hotel","DisplayedNamedList Hotel ${displayedNameList.value.namaHotel}")
         Log.d("Cek Isi Customer","DisplayedNamedList Customer ${displayedNameList.value.namaCustomer}")
     }
 
-    Column(
-        modifier = Modifier
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(8.dp),
-    ) {
-        Text(
-            text = displayedCustomerName.value,
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+    Button(
+        modifier = Modifier.padding(8.dp),
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = HijauMuda,
+            contentColor = Color.White
         )
-
-        // TODO : REVISI kontent BELAKANGAN
-
-        Text(text = displayedHotelName.value)
-
-        Log.d("Mana yang lebih cepat","nampilin, atau load data?")
-
-        Text(text = "" + jarakDlmKm + "km" )
-        Text(text = "Rp." + pesananModel.ongkir)
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(
-                onClick = { onNavigateToScreen(Screen.KonfirmDgnFoto.route) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
-            ) {
-                Text(
-                    text = "Ambil",
-                    style = TextStyle(
-                        fontSize = (18.sp),
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
+    ) {
+        Column {
+            Text(
+                text = displayedCustomerName.value,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
+            )
+
+            // TODO : REVISI kontent BELAKANGAN
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text = displayedHotelName.value)
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text = "Alamat : ")
+            Text(text =  displayedHotelAdress.value)
+            Spacer(modifier = Modifier.height(5.dp))
+            Log.d("Mana yang lebih cepat","nampilin, atau load data?")
+            Text(text = "Jarak Hotel Ke User :" + " " + jarakDlmKm + "km")
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text = "Rp." + pesananModel.ongkir)
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = { onNavigateToScreen(Screen.KonfirmDgnFoto.route) },
+                    colors = ButtonDefaults.buttonColors(containerColor = HijauTua),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = "Ambil",
+                        style = TextStyle(
+                            fontSize = (18.sp),
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    )
+                }
             }
         }
     }

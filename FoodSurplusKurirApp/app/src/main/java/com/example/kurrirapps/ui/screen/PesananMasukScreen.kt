@@ -43,6 +43,8 @@ import com.example.kurrirapps.presentation.pesanan.SelectedPesanan
 import com.example.kurrirapps.ui.component.ListPesananMasukScreen
 import com.example.kurrirapps.ui.navigation.Screen
 import com.example.kurrirapps.ui.theme.Brown
+import com.example.kurrirapps.ui.theme.HijauTua
+import com.example.kurrirapps.ui.theme.Krem
 
 
 @Composable
@@ -77,13 +79,16 @@ fun PesananMasuk(
         )
     }
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Krem)
+    ) {
         item {
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
-                    .background(Brown)
+                    .background(HijauTua)
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
@@ -120,7 +125,8 @@ fun PesananMasuk(
                     text = "Pesanan Masuk",
                     style = androidx.compose.ui.text.TextStyle(
                         fontSize = (30.sp),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     )
                 )
                 Spacer(modifier = Modifier.height(30.dp))

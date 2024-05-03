@@ -37,7 +37,7 @@ class PesananViewModel (
     fun ubahStatusPesanan(idPesanan: String) {
         viewModelScope.launch {
             try {
-                pesananRepository.editStatusPesanan(pesananId = idPesanan, statusBaru = "SUDAH_SAMPAI", fieldToUpdate = "status_pesanan",)
+                pesananRepository.editStatusPesanan(pesananId = idPesanan, statusBaru = "SAMPAI", fieldToUpdate = "status_pesanan",)
             } catch (e: Exception) {
                 Log.d("Viewmodel", "editcatatan exception : $e")
             }
@@ -49,8 +49,20 @@ class PesananViewModel (
                 pesananRepository.FotoBuktiKurir(
                     pesananId = idPesanan,
                     buktiFoto = buktiFoto,
-                    fieldToUpdate = "transferProofImageLink",
-
+                    fieldToUpdate = "buktiSampaiKurirLink",
+                )
+            } catch (e: Exception) {
+                Log.d("Viewmodel", "editcatatan exception : $e")
+            }
+        }
+    }
+    fun editIdKurir(idPesanan: String, idKurir :String) {
+        viewModelScope.launch {
+            try {
+                pesananRepository.editIdKurir(
+                    pesananId = idPesanan,
+                    idKurir = idKurir,
+                    fieldToUpdate = "id_kurir",
                 )
             } catch (e: Exception) {
                 Log.d("Viewmodel", "editcatatan exception : $e")
