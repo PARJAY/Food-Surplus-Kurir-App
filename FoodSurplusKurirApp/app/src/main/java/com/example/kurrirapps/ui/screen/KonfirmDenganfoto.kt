@@ -94,7 +94,7 @@ fun KonfirmDgnFoto(
 
     LaunchedEffect(Unit) {
         Log.d("Ringkasan Pesanan Screen", "Launched?")
-        
+
         selectedDetailPesanan.daftarKatalis.forEach { (key, value) ->
             Log.d("Ringkasan Pesanan Screen", "Katalis key : $key || katalis value : $value")
             val katalisModel = MyApp.appModule.katalisRepository.getKatalisById(key)
