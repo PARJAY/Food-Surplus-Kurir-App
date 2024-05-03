@@ -68,7 +68,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
         )
     }
 
-    NavHost(navController , startDestination = Screen.ScreenLogin.route ) {
+    NavHost(navController , startDestination = Screen.PesananMasuk.route ) {
         composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
@@ -165,6 +165,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
 //                factory = viewModelFactory { PesananViewModel(MyApp.appModule.pesananRepository) }
 //            )
 
+            LaunchedEffect(key1 = Unit) {
+                if (googleAuthUiClient.getSignedInUser() == null) {
+                    navController.navigate(Screen.ScreenLogin.route)
+                }
+            }
+
             Log.d("Nav", "uid : ${googleAuthUiClient.getSignedInUser()?.userId}")
 
             PesananMasuk(
@@ -214,10 +220,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner){
                         googleAuthUiClient.signOut()
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_LONG).show()
 
-
+                        navController.popBackStack()
                     }
                 },
-                onNavigateToScreen = { navController.navigate(it) }
             )
         }
     }

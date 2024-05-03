@@ -32,7 +32,6 @@ import com.example.kurrirapps.ui.theme.yellow
 fun profileScreen(
     userData: UserData?,
     onSignOut: ()->Unit,
-    onNavigateToScreen:(String)->Unit
 
 ) {
     Box(
@@ -89,7 +88,6 @@ fun profileScreenPreview() {
         profileScreen(
             userData=UserData(),
             onSignOut= {},
-            onNavigateToScreen={}
         )
     }
 }

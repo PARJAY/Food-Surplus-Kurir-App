@@ -57,11 +57,11 @@ class GoogleAuthClient(
         }
     }
 
-    suspend fun signOut() {
+    suspend fun signOut(){
         try {
             oneTapClient.signOut().await()
             auth.signOut()
-        } catch (e : Exception) {
+        }catch (e: Exception){
             e.printStackTrace()
             if (e is CancellationException) throw e
         }

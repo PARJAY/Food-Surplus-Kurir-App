@@ -7,7 +7,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -46,6 +48,7 @@ fun ListPesananMasukScreen(
 
     val displayedCustomerName = remember { mutableStateOf("") }
     val displayedHotelName = remember { mutableStateOf("") }
+    val displayedHotelAdress = remember { mutableStateOf("") }
     val displayedNameList = remember { mutableStateOf(PesananDisplayedNameModel()) }
 
     LaunchedEffect (Unit) {
@@ -58,6 +61,7 @@ fun ListPesananMasukScreen(
 
         displayedCustomerName.value = MyApp.appModule.customerRepositoryImpl.getCustomerById(pesananModel.id_user).name
         displayedHotelName.value = MyApp.appModule.hotelRepository.getHotelById(idHotel).name
+        displayedHotelAdress.value = MyApp.appModule.hotelRepository.getHotelById(idHotel).alamat
 
         Log.d("Cek Isi Hotel","DisplayedNamedList Hotel ${displayedNameList.value.namaHotel}")
         Log.d("Cek Isi Customer","DisplayedNamedList Customer ${displayedNameList.value.namaCustomer}")
@@ -82,12 +86,15 @@ fun ListPesananMasukScreen(
             )
 
             // TODO : REVISI kontent BELAKANGAN
-
+            Spacer(modifier = Modifier.height(5.dp))
             Text(text = displayedHotelName.value)
-
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(text = "Alamat : ")
+            Text(text =  displayedHotelAdress.value)
+            Spacer(modifier = Modifier.height(5.dp))
             Log.d("Mana yang lebih cepat","nampilin, atau load data?")
-
-            Text(text = "" + jarakDlmKm + "km" )
+            Text(text = "Jarak Hotel Ke User :" + " " + jarakDlmKm + "km")
+            Spacer(modifier = Modifier.height(5.dp))
             Text(text = "Rp." + pesananModel.ongkir)
 
             Row(

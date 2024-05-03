@@ -1,5 +1,6 @@
 package com.example.kurrirapps.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -54,9 +55,12 @@ fun RingkasanPesanan(
             selectedKatalis.forEach {
                 LeftRightText(it.namaKatalis + " x " +  it.quantity, it.hargaKatalis * it.quantity)
             }
+            Log.d("Cek hotelToUserDistance ",  "hotelToUserDistance : $hotelToUserDistance")
+
 
             if (hotelToUserDistance != 0f) {
                 ongkirPrice = hotelToUserDistance.div(10)
+                Log.d("Cek hotelToUserDistance ",  "hotelToUserDistance : $hotelToUserDistance")
 
                 LeftRightText("Biaya transportasi", totalHarga + ongkirPrice!!)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -69,13 +73,14 @@ fun RingkasanPesanan(
             }
 
             else {
+                LeftRightText("Biaya Transport",  ongkir)
                 Spacer(modifier = Modifier.height(16.dp))
                 Box (modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
                     .background(White)
                 )
-                LeftRightText("Total Harga", totalHarga)
+                LeftRightText("Total Harga", totalHarga + ongkir)
             }
         }
     }
